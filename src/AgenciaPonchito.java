@@ -468,22 +468,26 @@ public class AgenciaPonchito {
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
 
-                    if (iop == 1) {
-                        System.out.println("\nResultado de la consulta: ");
-                        transac.qryAllPaises();
-                    }//Fin if 1
 
-                    if (iop == 2) {
-                        String pais = "";
-                        pais = transac.queryPais();
+                    switch (iop){
+                        case 0: //Regresar al menu anterior
+                            break;
+                        case 1: //Todos los paises disponibles
+                            System.out.println("\nResultado de la consulta: ");
+                            transac.qryAllPaises();
+                            break;
+                        case 2: //Buscar un pais específico
+                            String pais = "";
+                            pais = transac.queryPais();
 
-                        if (pais.length() == 0) {
-                            System.out.println("\nPais no disponible o inexistente");
-                        }
-                        ;//Fin if 2.1
-
-                    }//Fin if 2
-
+                            if (pais.length() == 0) {
+                                System.out.println("\nPais no disponible o inexistente");
+                            }//Fin if 2.1
+                            break;
+                        default:
+                            System.out.println("Opcion no disponible");
+                            break;
+                    }
                     //Separador de respuesta
                     System.out.println();
                     break;
@@ -495,8 +499,38 @@ public class AgenciaPonchito {
                     System.out.println("1)Todas las ciudades disponibles");
                     System.out.println("2)Todas las ciudades de un país");
                     System.out.println("3)Buscar una ciudad de un país");
-                    System.out.println("0)Regresar al menu principal ");
+                    System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
+                    iop = Integer.parseInt(in.readLine());
+                    String pais = "";
+                    switch(iop){
+                        case 0: //Regresar al menu anterior
+                            break;
+                        case 1: //Todas las ciudades disponibles
+                            System.out.println("\nResultado de la consulta: ");
+                            transac.qryAllDistnCiudades();
+                            break;
+                        case 2: //Todas las ciudades de un país
+                            System.out.println("Nombre de pais deseado: ");
+                            pais = in.readLine();
+                            System.out.println("\nResultado de la consulta: ");
+                            transac.qryAllCiudades(pais);
+                        break;
+                        case 3: //Buscar una ciudad de un país
+                            System.out.println("Nombre de pais deseado: ");
+                            pais = in.readLine();
+                            String result = transac.queryCiudad(pais);
+                            if (result != ""){
+                                System.out.println("Ciudad encontrada");
+                            }
+                            else{
+                                System.out.println("Ciudad no encontrada o inexistente");
+                            }
+                            break;
+                    }//end switch
+
+                    //Separador de respuesta
+                    System.out.println();
                     break;
 
                 case 3: //Lugares
@@ -504,15 +538,23 @@ public class AgenciaPonchito {
                     System.out.println("2)Todos los lugares por ciudad");
                     System.out.println("3)Todos los lugares por país");
                     //System.out.println("4)Lugares en un rango de precios");
-                    System.out.println("0)Regresar al menu principal ");
+                    System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
+                    iop = Integer.parseInt(in.readLine());
+
+                    //Separador de respuesta
+                    System.out.println();
                     break;
 
                 case 4: //Fechas
                     System.out.println("1)Todas las fechas disponibles");   //Si tiene NbPersonas en 0 no se muestra porque no hay lugares disponibles.
                     System.out.println("2)Fechas por lugares disponibles");
-                    System.out.println("0)Regresar al menu principal ");
+                    System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
+                    iop = Integer.parseInt(in.readLine());
+
+                    //Separador de respuesta
+                    System.out.println();
                     break;
 
                 case 5: //Circuitos Sugeridos
@@ -523,8 +565,12 @@ public class AgenciaPonchito {
                     System.out.println("5)Circuitos por país de llegada");
                     System.out.println("6)Circuitos por días de duración");
                     System.out.println("7)Circuitos en un rango de precios");
-                    System.out.println("0)Regresar al menu principal ");
+                    System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
+                    iop = Integer.parseInt(in.readLine());
+
+                    //Separador de respuesta
+                    System.out.println();
                     break;
 
                 case 6: //Hoteles
@@ -532,12 +578,18 @@ public class AgenciaPonchito {
                     System.out.println("Buscar un hotel específico");
                     System.out.println("Buscar hoteles por ciudad");
                     System.out.println("Buscar hoteles por país");
-                    System.out.println("0)Regresar al menu principal ");
+                    System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
+                    iop = Integer.parseInt(in.readLine());
+
+                    //Separador de respuesta
+                    System.out.println();
                     break;
 
                 default:
                     System.out.println("Opcion de consulta no valida");
+                    //Separador de respuesta
+                    System.out.println();
                     break;
             }//Fin estructura switch
 

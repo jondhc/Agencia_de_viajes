@@ -346,6 +346,7 @@ public class TransactionMySQL {
             else {
                 //Regresa rnombre pais encontrado
                 paisres = paisdes[0][0];
+                System.out.println("Pais "+paisres+" encontrado");
             }//Fin else
 
         }//Fin try
@@ -437,6 +438,25 @@ public class TransactionMySQL {
         }//Fin catch
 
     }//Fin qryAllCiudades
+
+    //--------------------------------------------------------------------------
+    //Metodo que imprime en pantalla todas las ciudades disponibles
+    public void qryAllDistnCiudades() throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select distinct(Nombre) from CIUDAD;");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+
+    }//Fin qryAllDistnCiudades
 
     //--------------------------------------------------------------------------
     //Metodo que regresa un lugar especifico en forma String[1][2] {Nombre,Ciudad}] { {Nombre,Ciudad} }
