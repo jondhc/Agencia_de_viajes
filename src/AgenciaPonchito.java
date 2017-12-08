@@ -600,6 +600,48 @@ public class AgenciaPonchito {
                     System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
+                    switch(iop){
+                        case 0:
+                            break;
+                        case 1: //Todos los circuitos disponibles
+                            System.out.println("Circuitos: ");
+                            transac.queryAllCircuitos();
+                            break;
+                        case 2: //Circuitos por ciudad de salida
+                            System.out.println("Escriba la ciudad de salida:");
+                            String ciudadS = in.readLine();
+                            transac.queryAllCircCS(ciudadS);
+                            break;
+                        case 3: //Circuitos por ciudad de llegada
+                            System.out.println("Escriba la ciudad de llegada: ");
+                            String ciudadL = in.readLine();
+                            transac.queryAllCircCL(ciudadL);
+                            break;
+                        case 4: //Circuitos por Pais de salida
+                            System.out.println("Escriba el pais de salida:");
+                            String paisS = in.readLine();
+                            transac.queryAllCircPS(paisS);
+                            break;
+                        case 5: //Circuitos por pais de llegada
+                            System.out.println("Escriba el pais de llegada: ");
+                            String paisL = in.readLine();
+                            transac.queryAllCircPL(paisL);
+                            break;
+                        case 6: //Circuitos por duración
+                            System.out.println("Escriba la duración deseada :");
+                            int duracionC = Integer.parseInt(in.readLine());
+                            transac.queryAllCircD(duracionC);
+                            break;
+                        case 7: //Circuitos en un rango de precios
+                            System.out.println("Ingrese el precio mínimo de circuito: ");
+                            int precioMin = Integer.parseInt(in.readLine());
+                            System.out.println("Ingrese el precio máximo de circuito");
+                            int precioMax = Integer.parseInt(in.readLine());
+                            transac.queryAllCircRP(precioMin, precioMax);
+                            break;
+                        default:
+                            break;
+                    }
 
                     //Separador de respuesta
                     System.out.println();

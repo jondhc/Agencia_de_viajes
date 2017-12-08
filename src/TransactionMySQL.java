@@ -507,6 +507,123 @@ public class TransactionMySQL {
 
     }//Fin queryAllFechasL
 
+    public void queryAllCircuitos() throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select * from CIRCUITO;");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+
+    }//Fin queryAllCircuitos
+
+    public void queryAllCircCS(String ciudad) throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where CiudadSalida = '"+ciudad+ "' ;");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+
+    }//Fin queryAllCircCS
+
+    public void queryAllCircCL(String ciudad) throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where CiudadLlegada = '"+ciudad+ "' ;");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+
+    }//Fin queryAllCircCL
+
+    public void queryAllCircPS(String pais) throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where PaisSalida = '" + pais + "';");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+
+    }//Fin queryAllCircPS
+
+    public void queryAllCircPL(String pais) throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where PaisLlegada = '" + pais + "';");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+
+    }//Fin queryAllCircPL
+
+    public void queryAllCircD(int duracion) throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where Duracion = '"+duracion+ "' ;");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+    }//Fin queryAllCircD
+
+    public void queryAllCircRP(int precioMin, int precioMax) throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where Precio between "+precioMin+ " and "+precioMax+";");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+    }//Fin queryAllCircRP
+
     //--------------------------------------------------------------------------
     //Metodo que imprime en pantalla todas las ciudades disponibles
     public void qryAllDistnCiudades() throws SQLException, IOException {
