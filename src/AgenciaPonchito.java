@@ -16,8 +16,7 @@ import java.sql.Date;
 import java.text.ParseException;
 //Atributos
 
-public class AgenciaPonchito
-{
+public class AgenciaPonchito {
     //Atributos
     //Declaracion Objeto bufferedReader para obtener la info (Equivalente a Scanf)
     BufferedReader in = null;
@@ -27,18 +26,16 @@ public class AgenciaPonchito
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //Constructor que solo inizalzia el BufferedReader
-    public AgenciaPonchito()
-    {
+    public AgenciaPonchito() {
         //Inicializar lector de buffer para leer los datos de un stream de entrada
-        in = new BufferedReader( new InputStreamReader(System.in));
+        in = new BufferedReader(new InputStreamReader(System.in));
     }//Fin constructor
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     //Metodos
     //--------------------------------------------------------------------------
     //Metodo que imprime el menu de login
-    int MenuLogin () throws Exception
-    {
+    int MenuLogin() throws Exception {
         int io = -1;
 
         System.out.println("\t\tAGENCIA DE VIAJES PONCHITO\n");
@@ -46,16 +43,16 @@ public class AgenciaPonchito
         System.out.println("1)Ingresar (solo usuarios autorizados)");
         System.out.println("2)Registrarse");
         System.out.println("0)Salir");
-        System.out.print("Opcion:" );
+        System.out.print("Opcion:");
 
-        io = Integer.parseInt( in.readLine() );
+        io = Integer.parseInt(in.readLine());
 
         return io;
     }//Fin MenuLogin
+
     //--------------------------------------------------------------------------
     //SubmenuReservaciones
-    void Reservaciones(int iduser) throws Exception
-    {
+    void Reservaciones(int iduser) throws Exception {
         int selected = -1;
         //Objeto trasnaccion exclusivo de la simulacion
         TransactionMySQL transm = new TransactionMySQL();
@@ -63,8 +60,7 @@ public class AgenciaPonchito
         int idsim = -1;
         int idres = -1;
 
-        do
-        {
+        do {
             //LLAMAR MENU
             System.out.println("\t\tRESERVACION DE VIAJES\n");
 
@@ -76,13 +72,12 @@ public class AgenciaPonchito
 
             //Obtener informacion en forma de cadena y luego convertirla como entero
             //y guardarla en variable selceted
-            selected = Integer.parseInt( in.readLine() );
+            selected = Integer.parseInt(in.readLine());
 
             //Espacio despues de opcion seleccionada
             System.out.println();
 
-            switch(selected)
-            {
+            switch (selected) {
                 case 0:
 
                     break;
@@ -102,16 +97,13 @@ public class AgenciaPonchito
 
                     System.out.println("Validando simulacion...\n");
                     //Obtener id de reservacion si se valido la simulacion
-                    idres = transm.ValidarSimulacion(iduser,idsim);
+                    idres = transm.ValidarSimulacion(iduser, idsim);
 
                     //Saber si la validacion fue exitosa
-                    if(idres == -1 )
-                    {
+                    if (idres == -1) {
                         System.out.println("VALIDACION DE SIMULACION FALLIDA! RESERVACION NO COMPLETADA!\n");
-                    }
-                    else
-                    {
-                        System.out.println("VALIDACION DE SIMULACION EXITOSA! NUMERO DE RESERVACION: "+idres+"\n");
+                    } else {
+                        System.out.println("VALIDACION DE SIMULACION EXITOSA! NUMERO DE RESERVACION: " + idres + "\n");
 
                         //Validar info Usuario
                         ValidarInfoUsuario(iduser);
@@ -133,29 +125,28 @@ public class AgenciaPonchito
 
                     break;
 
-                default :
+                default:
                     System.out.println("Opcion no valida");
                     break;
 
             }//Fin estructura swithc case
 
-        }while(selected != 0); //Mientras el
+        } while (selected != 0); //Mientras el
 
 
     }//Fin metodo reservaciones
+
     //--------------------------------------------------------------------------
     //SUBMENU PARA CONSULTAR LISTADO DE TODOS LAS RESERVACIONES QUE POSEE UN CLIENTE
     //Y OPCION PARA VER INFORMACION DETALLADE DE UNA RESERVACION
-    void submenuConsultaRes(int id)throws Exception
-    {
+    void submenuConsultaRes(int id) throws Exception {
         int iop = -1;
         int idres = -1;
 
         //Objeto trasnaccion exclusivo de query de consulta de info de reservacion
         TransactionMySQL trans = new TransactionMySQL();
 
-        do
-        {
+        do {
             System.out.println("\n\tCONSULTA DE RESERVACIONES");
             System.out.println("1)Mostrar todas mis reservaciones");
             System.out.println("2)Desglozar reservacion");
@@ -163,8 +154,7 @@ public class AgenciaPonchito
             System.out.print("Opcion:");
             iop = Integer.parseInt(in.readLine());
 
-            switch(iop)
-            {
+            switch (iop) {
                 case 0:
                     //fin conexion
                     trans.close();
@@ -194,7 +184,7 @@ public class AgenciaPonchito
                     System.out.print("\nID de reservacion: ");
                     idres = Integer.parseInt(in.readLine());
 
-                    trans.MostrarDetallesRes(idres,id);
+                    trans.MostrarDetallesRes(idres, id);
 
                     System.out.println();
                     break;
@@ -202,23 +192,22 @@ public class AgenciaPonchito
             }//Fin switch
 
 
-        }while(iop != 0);
+        } while (iop != 0);
 
 
     }//Fin metodo submenuConsultaSim
+
     //--------------------------------------------------------------------------
     //SUBMENU PARA CONSULTAR LISTADO DE TODOS LAS SIMULACIONES QUE POSEE UN USUARIO
     //Y OPCION PARA VER INFORMACION DETALLADA DE UNA SIMULACION
-    void submenuConsultaSim(int id)throws Exception
-    {
+    void submenuConsultaSim(int id) throws Exception {
         int iop = -1;
         int idsim = -1;
 
         //Objeto trasnaccion exclusivo de query de consulta de info de simulacion
         TransactionMySQL trans = new TransactionMySQL();
 
-        do
-        {
+        do {
             System.out.println("\n\tCONSULTA DE SIMULACIONES");
             System.out.println("1)Mostrar todas mis simulaciones");
             System.out.println("2)Desglozar simulacion");
@@ -226,8 +215,7 @@ public class AgenciaPonchito
             System.out.print("Opcion:");
             iop = Integer.parseInt(in.readLine());
 
-            switch(iop)
-            {
+            switch (iop) {
                 case 0:
                     //fin conexion
                     trans.close();
@@ -256,7 +244,7 @@ public class AgenciaPonchito
                     System.out.print("\nID de simulacion: ");
                     idsim = Integer.parseInt(in.readLine());
 
-                    trans.MostrarDetallesSim(idsim,id);
+                    trans.MostrarDetallesSim(idsim, id);
 
                     System.out.println();
                     break;
@@ -264,24 +252,23 @@ public class AgenciaPonchito
             }//Fin switch
 
 
-        }while(iop != 0);
+        } while (iop != 0);
 
 
     }//Fin metodo submenuConsultaSim
+
     //--------------------------------------------------------------------------
     //Se hace la verificacion de que sea un usuario conocido; si no es se pide
     //registro de datos faltantes; si es un usario conocido se le muestra la
     //informacion y despues se pregunta si desea actualizar algun atributo
-    void ValidarInfoUsuario(int id)throws Exception
-    {
-        String tipo,dir,pago,emple;
+    void ValidarInfoUsuario(int id) throws Exception {
+        String tipo, dir, pago, emple;
         int iop = -1;
         String[][] infactual;//contenedro de info actual del usuario
 
         //Objeto transaccion exclusivo para verificacionCliente
         TransactionMySQL tran = new TransactionMySQL();
-        if(tran.VerificarCliente(id) != -1)
-        {
+        if (tran.VerificarCliente(id) != -1) {
             System.out.println("Informacion actual de cliente conocido: \n");
 
             //Hacer print de todos los datos tabla USUARIO/Cliente
@@ -294,8 +281,7 @@ public class AgenciaPonchito
             System.out.println("2)No");
             System.out.print("Opcion: ");
 
-            if( (Integer.parseInt(in.readLine() ) ) == 1)
-            {
+            if ((Integer.parseInt(in.readLine())) == 1) {
                 //Obtener Info actual CLiente conocido y asignarsela a variables
                 //para que aquellas opciones que no se van a cambiar no pierdan
                 //datos
@@ -306,8 +292,7 @@ public class AgenciaPonchito
                 pago = infactual[0][2];
                 emple = infactual[0][3];
 
-                do
-                {
+                do {
                     System.out.println("\nIndique campo que desea actualizar:\n");
                     System.out.println("1)Tipo Cliente");
                     System.out.println("2)Direccion");
@@ -317,8 +302,7 @@ public class AgenciaPonchito
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
 
-                    switch(iop)
-                    {
+                    switch (iop) {
                         case 0:
                             break;
 
@@ -348,7 +332,7 @@ public class AgenciaPonchito
 
                     }//Fin estructura switch
 
-                }while(iop != 0);
+                } while (iop != 0);
 
                 //Llamar metodo de actualizacion de info de CLIENTE CONOCIDO
                 tran.UpdateDatosCliente(id, tipo, dir, pago, emple);
@@ -358,8 +342,7 @@ public class AgenciaPonchito
 
 
         }//Fin if 1
-        else
-        {
+        else {
             System.out.println("Cliente no conocido!\n");
 
             System.out.println("Completar informacion requerida:");
@@ -376,23 +359,22 @@ public class AgenciaPonchito
             System.out.print("Es empleado de Agencias Ponchito(Si/No): ");
             emple = in.readLine();
 
-            tran.InsertarCliente(id, tipo,CURRENTDATE,dir, pago, emple);
+            tran.InsertarCliente(id, tipo, CURRENTDATE, dir, pago, emple);
 
         }//Fin else 1
 
     }//Fin metodo validar usuario
+
     //--------------------------------------------------------------------------
     //Metodo que imprime el menu principal
-    int MenuPrincipal( int iduser)throws Exception
-    {
+    int MenuPrincipal(int iduser) throws Exception {
         int selected = -1;
         //Objeto trasnaccion exclusivo de la simulacion
         TransactionMySQL transm = new TransactionMySQL();
 
         //Eliminar todos los clientes que no tengan al menos una Reservacion
 
-        do
-        {
+        do {
             //LLAMAR MENU
             System.out.println("\t\tAGENCIA DE VIAJES PONCHITO\n");
 
@@ -404,13 +386,12 @@ public class AgenciaPonchito
 
             //Obtener informacion en forma de cadena y luego convertirla como entero
             //y guardarla en variable selceted
-            selected = Integer.parseInt( in.readLine() );
+            selected = Integer.parseInt(in.readLine());
 
             //Espacio despues de opcion seleccionada
             System.out.println();
 
-            switch(selected)
-            {
+            switch (selected) {
                 case 0:
                     //Final de Transaccion, Entonces cerrar todo
                     //Cerrar statement y la conexion (Los resultset usados se cierran
@@ -425,7 +406,7 @@ public class AgenciaPonchito
 
                 case 2:
                     //Submenu Simulacion
-                    transm.Simulacion(CURRENTDATE,iduser);
+                    transm.Simulacion(CURRENTDATE, iduser);
                     break;
 
                 case 3:
@@ -433,29 +414,28 @@ public class AgenciaPonchito
                     Reservaciones(iduser);
                     break;
 
-                default :
+                default:
                     System.out.println("Opcion no valida");
                     break;
 
             }//Fin estructura swithc case
 
-        }while(selected != 0); //Mientras el
+        } while (selected != 0); //Mientras el
 
         return selected;
     }//Fin metodo menu principal
+
     //--------------------------------------------------------------------------
     //Metodo que imprime y maneja la ejecucuion de los metodos correspondientes
     //de acuerdo a las opciones ofrecidas para realizar las consultas de la informacion
     //de los viajes ofrecidos mientras se navega en folleto
-    public void MenuFolleto() throws Exception
-    {
+    public void MenuFolleto() throws Exception {
         int select = -1;
         int iop = 0;
         //Objeto para transaccion de MySql
         TransactionMySQL transac = new TransactionMySQL();
 
-        do
-        {
+        do {
             System.out.println("\tCONSULTA DE FOLLETO\n");
 
             System.out.println("1)Paises");
@@ -469,13 +449,12 @@ public class AgenciaPonchito
 
             //Obtener informacion en forma de cadena y luego convertirla como entero
             //y guardarla en variable selceted
-            select = Integer.parseInt( in.readLine() );
+            select = Integer.parseInt(in.readLine());
 
             //Espacio despues de opcion seleccionada
             System.out.println();
 
-            switch(select)
-            {
+            switch (select) {
                 case 0:
                     //Salirse, Entonces cerrar todo
                     //Cerrar statement y la conexion
@@ -486,20 +465,21 @@ public class AgenciaPonchito
                     System.out.println("1)Todos los paises disponibles");
                     System.out.println("2)Buscar un pais especifico");
                     System.out.print("Opcion: ");
-                    iop = Integer.parseInt( in.readLine() );
+                    iop = Integer.parseInt(in.readLine());
 
-                    if(iop == 1)
-                    {
+                    if (iop == 1) {
                         System.out.println("\nResultado de la consulta: ");
                         transac.qryAllPaises();
                     }//Fin if 1
 
-                    if(iop == 2)
-                    {
+                    if (iop == 2) {
                         String pais = "";
                         pais = transac.queryPais();
 
-                        if(pais.length() == 0) {System.out.println("\nPais no disponible o inexistente");};//Fin if 2.1
+                        if (pais.length() == 0) {
+                            System.out.println("\nPais no disponible o inexistente");
+                        }
+                        ;//Fin if 2.1
 
                     }//Fin if 2
 
@@ -531,26 +511,24 @@ public class AgenciaPonchito
             }//Fin estructura switch
 
 
-        }while( select != 0);
+        } while (select != 0);
 
     }//Fin metodo MenuFolleto
+
     //--------------------------------------------------------------------------
     //Metodo que hace validacion de Login y si pasa el login llama al MenuPrincipal
     //Pero si falla indica que no hay usuario registrado
-    public void validarLogin()throws Exception
-    {
+    public void validarLogin() throws Exception {
         //Objeto para transaccion de MySql
         TransactionMySQL transac = new TransactionMySQL();
         int idobt = transac.Login();
 
-        if( idobt != -1)
-        {
+        if (idobt != -1) {
             //Paso el login, entonces ir a MenuPrincipal pasando id usuario actual
             System.out.println();
             MenuPrincipal(idobt);
         }//Fin if 1
-        else
-        {
+        else {
             //No paso el login, porque se regreso Id -1
             System.out.println("Usuario inexistente!\n");
 
@@ -560,11 +538,11 @@ public class AgenciaPonchito
         transac.close();
 
     }//Fin validar Login
+
     //--------------------------------------------------------------------------
     //Metodo que realiza registro de usuario y una vez que lo efectua lleva al
     //menu principal
-    public void RegistrarUsuario() throws Exception
-    {
+    public void RegistrarUsuario() throws Exception {
         //Objeto para la transaccion
         TransactionMySQL trans = new TransactionMySQL();
         int idass = -1;
@@ -572,8 +550,7 @@ public class AgenciaPonchito
         //Obtener id asignado
         idass = trans.userRegistration();
 
-        if(idass != -1)
-        {
+        if (idass != -1) {
             //Ir al menu principal pasando le el id del usuario actual
             MenuPrincipal(idass);
         }//FIn if 1
@@ -582,10 +559,10 @@ public class AgenciaPonchito
         trans.close();
 
     }//Fin metodo RegistrarUsuario
+
     //-------------------------------------------------------------------------
     //Inicio del programa/main
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) throws Exception {
         //Declaracion de variables
         //Opcion seleccionada menuPrincipal
         int iop = -1;
@@ -608,12 +585,10 @@ public class AgenciaPonchito
 
         //Verificación de derechos de acceso
 
-        do
-        {
+        do {
             //LLAMAR MENU
             iop = agencia.MenuLogin();
-            switch(iop)
-            {
+            switch (iop) {
                 case 0:
                     break;
 
@@ -627,13 +602,13 @@ public class AgenciaPonchito
                     agencia.RegistrarUsuario();
                     break;
 
-                default :
+                default:
                     System.out.println("Opcion no valida");
                     break;
 
             }//Fin estructura swithc case
 
-        }while(iop != 0); //Mientras el
+        } while (iop != 0); //Mientras el
 
         //Datos de salida
 

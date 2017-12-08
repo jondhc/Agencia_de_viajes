@@ -4,14 +4,14 @@
  */
 
 //Librerias
+
 import java.sql.*;
 import java.io.*;
 import java.util.Calendar;
 import java.util.Scanner;
 
 //Inicio clase TransactionMySQL
-public class TransactionMySQL
-{
+public class TransactionMySQL {
     //ATRIBUTOS
 
     //Declaracion Objeto conexion
@@ -34,14 +34,13 @@ public class TransactionMySQL
     int costoHoteles = 0;
 
     //+++++++++++++++++++++ INICIO CONSTRUCTOR +++++++++++++++++++++++++++++++++
-    public TransactionMySQL() throws SQLException, Exception
-    {
+    public TransactionMySQL() throws SQLException, Exception {
         //Esto se cargara en el Driver de MySQL, cada BDs tiene su propio driver
         Class.forName("com.mysql.jdbc.Driver");
         System.out.print("Conectandose a la base de datos... ");
 
         //Preparar la conexion con la BDs/Inicializacion de objeto Connerction
-        conn = DriverManager.getConnection(URL+BD,USER,PASSWD);
+        conn = DriverManager.getConnection(URL + BD, USER, PASSWD);
         System.out.println(" Conexion exitosa!\n\n");
 
         //Desactivar auto commit para manejar manualmente transacciones
@@ -50,7 +49,7 @@ public class TransactionMySQL
         stmt = conn.createStatement();
         //Inicializar lector de buffer para leer los datos de un stream de entrada
         //Equivalente a Scanf
-        in = new BufferedReader( new InputStreamReader(System.in));
+        in = new BufferedReader(new InputStreamReader(System.in));
 
     }//Fin constructor
     //+++++++++++++++++++++ FIN CONSTRUCTOR ++++++++++++++++++++++++++++++++++++
@@ -61,8 +60,7 @@ public class TransactionMySQL
     //encontrar algo, si no se encuentra nada se regresa una matriz de tamaño 0
     //Este metodo regresa una tupla por fila con cada atributo en la columna
     //correspondiente para cada una de las tuplas
-    String[][] ResultQuery (String query) throws SQLException
-    {
+    String[][] ResultQuery(String query) throws SQLException {
         //----------------
         //System.out.println("Entro resultquery");
         //---------------
@@ -96,12 +94,9 @@ public class TransactionMySQL
         ///de la matriz lo que es malo ya que se regresa una matriz sin filas
         //por ende si la matriz tiene 0 filas se inicializa con [1][1] donde
         //el unico valor sera null, todo esto para evitar erores
-        if(numr != 0)
-        {
+        if (numr != 0) {
             result = new String[numr][numc];
-        }
-        else
-        {
+        } else {
             result = new String[1][1];
         }
 
@@ -116,8 +111,7 @@ public class TransactionMySQL
 
         //Como cursor de fila ya esta antes de primera posicion hacer el guardado
         //del contenido de forma ordenada
-        while(rset.next())
-        {
+        while (rset.next()) {
             //------------------------------------
             //System.out.println("Tupla #"+ifil+": ");
             //--------------------------------------
@@ -125,8 +119,7 @@ public class TransactionMySQL
             //Para cada fila/Tupla guardar el contenido de cada uno de sus
             //columnas inicando por la columna 1 pero guardando desde la fila 0
             //en el arreglo
-            for(int i = 1; i <= numc; i++)
-            {
+            for (int i = 1; i <= numc; i++) {
                 result[ifil][icol] = rset.getString(i);
                 //---------------
                 //System.out.println("Guardado en:"+ifil+":"+icol);
@@ -153,11 +146,11 @@ public class TransactionMySQL
         return result;
 
     }//Fin metodo result query
+
     //--------------------------------------------------------------------------
     //Metodo que dado el conjunto resultante obtenido de un query hace la impresion
     //de esta informacion en consola
-    public void dumpResultSet(ResultSet rset) throws SQLException
-    {
+    public void dumpResultSet(ResultSet rset) throws SQLException {
         //Metadatos del ResultSet
         ResultSetMetaData rsetmd = rset.getMetaData();
 
@@ -169,14 +162,12 @@ public class TransactionMySQL
         //rset.next mueve el cursor una tupla/fila, inicialmente el cursor
         //es posicionado antes de la primera columna, por lo que la primera vez
         //que se llama se pociona en columna 0  y luego continua
-        while(rset.next())
-        {
+        while (rset.next()) {
             //Para cada fila/Tupla imprimir el contenido de cada uno de sus
             //columnas inicando por la columna 1
-            for(int j = 1; j <= i; j++)
-            {
+            for (int j = 1; j <= i; j++) {
                 //Imprimir contenido columna(j) en fila actual(rset.next())
-                System.out.print(rset.getString(j) + "\t" );
+                System.out.print(rset.getString(j) + "\t");
 
             }//Fin for 1
 
@@ -186,11 +177,11 @@ public class TransactionMySQL
         }//Fin while 1
 
     }//Fin metodo dumpResultSet
+
     //--------------------------------------------------------------------------
     //Metodo que ejecuta un query que es pasado como string y dado el ResultSet
     //que se obtiene este es impreso mediante la llamada del metodo dumpResuktSet
-    public void query(String statement) throws SQLException
-    {
+    public void query(String statement) throws SQLException {
         //Ejecutar query y guardar resultado en ResultSet
         ResultSet rset = stmt.executeQuery(statement);
 
@@ -203,10 +194,10 @@ public class TransactionMySQL
         rset.close();
 
     }//Fin metodo query
+
     //--------------------------------------------------------------------------
     //Metodo que cierra tanto la conexion a la base de datos como el statement
-    public void close() throws SQLException
-    {
+    public void close() throws SQLException {
         //******************IMPORTANTE CLOSE DE STATEMENT***************
         //Cerrar el Statement del objeto query usado en todas las consultas: Esto libera inmediatamente los recursos
         //de la BDs de este objeto Statement y los recursos del JDBC en lugar de
@@ -221,11 +212,11 @@ public class TransactionMySQL
         conn.close();
 
     }//Fin metodo close
+
     //--------------------------------------------------------------------------
     //Metodo que se conecta a la base de datos y busca a un usuario con el nombre
     //que le es dado, si no lo encuentra regresa -1 si no regresa su ID
-    int Login() throws SQLException, IOException
-    {
+    int Login() throws SQLException, IOException {
         int idusr = -1;
         String[][] resultado = new String[1][1];
 
@@ -234,15 +225,12 @@ public class TransactionMySQL
 
         System.out.print("Nombre de usuario: ");
 
-        try
-        {
+        try {
             //Query
-            resultado = ResultQuery("select Id,Nombre from USUARIO where Nombre = '"+in.readLine()+"';");
+            resultado = ResultQuery("select Id,Nombre from USUARIO where Nombre = '" + in.readLine() + "';");
             //Si no hay error hacer commit ()
             conn.commit();  //Fin transaccion e inicio de otra transaccion
-        }
-        catch(SQLException sqle)
-        {
+        } catch (SQLException sqle) {
             //En caso de error hacer rollback
             conn.rollback(); //Fin transaccion e inicio de otra transaccion
         }
@@ -251,28 +239,25 @@ public class TransactionMySQL
         //--------------------
 
         //Ver si regreso vacio el primer atributo de la primera tupla
-        if(resultado[0][0] == null)
-        {
+        if (resultado[0][0] == null) {
             //Dejar con -1 el id
-        }
-        else
-        {
+        } else {
             //No regreso vacia; entonces regresar el id del usuario encontrado
             idusr = Integer.parseInt(resultado[0][0]);
 
-            System.out.println("\nBienvenido: "+ resultado[0][1]);
+            System.out.println("\nBienvenido: " + resultado[0][1]);
 
         }//Fin else
 
         return idusr;
     }//Fin login
+
     //--------------------------------------------------------------------------
     //Metodo que hace el registro de todos los Usuarios (Potenciales y conocidos)
     //asignando siempre un id consecutivo, para lo que primero obtiene cual
     //es el id mas grande de todos los usuarios y le suma 1 para el nuevo usuario
     //que se registra; mismo ID que se regresa al final de este metodo
-    int userRegistration() throws SQLException, IOException
-    {
+    int userRegistration() throws SQLException, IOException {
         int idassigned = -1;
         String res[][];
         String name = "";
@@ -290,8 +275,7 @@ public class TransactionMySQL
         conn.setTransactionIsolation(8);
 
         //Inicio transaccion
-        try
-        {
+        try {
             res = ResultQuery("select max(id) from USUARIO");
 
             //--------------
@@ -301,26 +285,22 @@ public class TransactionMySQL
 
             //Verificar si no hay ni una tupla; si no hay nada se regresa null a
             //pesar de que este el metodo resultset.getString(NumColumna)
-            if(res[0][0] == null)
-            {
+            if (res[0][0] == null) {
                 //Asignar 1 para el primer usuario
                 idassigned = 1;
             }//Fin if 1
-            else
-            {
+            else {
                 //Sumarle 1 al ID del usuario mas alto
-                idassigned = Integer.parseInt( res[0][0] ) + 1;
+                idassigned = Integer.parseInt(res[0][0]) + 1;
             }//Fin else 1
 
             //Hacer la actualizacion
-            stmt.executeUpdate("insert into USUARIO values ('"+name+"',"+idassigned+");");
+            stmt.executeUpdate("insert into USUARIO values ('" + name + "'," + idassigned + ");");
 
             //Si no hay error hacer commit
             conn.commit();      //Fin transaccion e inicio de otra transaccion
 
-        }
-        catch(SQLException sqle)
-        {
+        } catch (SQLException sqle) {
             //Si hay error cancelar la transaccion
             conn.rollback();    //Fin transaccion e inicio de otra transaccion
 
@@ -334,12 +314,12 @@ public class TransactionMySQL
         return idassigned;
 
     }//Fin userRegistration
+
     //--------------------------------------------------------------------------
     //Metodo que dado el nombre de un pais busca en la tabla CIUDADES si hay
     //alguno, si lo encuentra lo regresa como String si no lo enecuntra regresa
     //""
-    String queryPais() throws SQLException, IOException
-    {
+    String queryPais() throws SQLException, IOException {
         String paisdes[][];
         String paisres = "";
         //Nivel de islamiento solo para lecturas
@@ -353,27 +333,23 @@ public class TransactionMySQL
         //No obstante en esta operacion de una consulata con bajo nivel de
         //aislamiento es poco probable que cause diferencia ya que los datos
         //no son bloqueados para otras operaciones
-        try
-        {
+        try {
             //Hacer query
-            paisdes = ResultQuery("select distinct(Pais) from CIUDAD where Pais = '"+in.readLine()+"';");
+            paisdes = ResultQuery("select distinct(Pais) from CIUDAD where Pais = '" + in.readLine() + "';");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
 
             //Verificar que se haya encontrado un pais, si no regresar vacio
-            if(paisdes[0][0] == null)
-            {
+            if (paisdes[0][0] == null) {
                 paisres = "";
             }//Fin if
-            else
-            {
+            else {
                 //Regresa rnombre pais encontrado
                 paisres = paisdes[0][0];
             }//Fin else
 
         }//Fin try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             //Si hay error cancelar todo con rollback
             conn.rollback(); //Fin transaccion e inicio de otra transaccion
         }//Fin catch
@@ -381,34 +357,31 @@ public class TransactionMySQL
         return paisres;
 
     }//Fin metodo query pais
+
     //--------------------------------------------------------------------------
     //Metodo que imprime en pantalla todos los paises en la BDs
-    public void qryAllPaises() throws SQLException, IOException
-    {
+    public void qryAllPaises() throws SQLException, IOException {
         //Nivel de islamiento solo para lecturas
         conn.setTransactionIsolation(1);
 
-        try
-        {
+        try {
             //Hacer query
             query("select distinct(Pais) from CIUDAD ;");
             //Si no hay error hacer commit
             conn.commit();  //Fin transaccion e inicio de otra transaccion
-        }
-        catch(SQLException sqle)
-        {
+        } catch (SQLException sqle) {
             //Si hay error cancelar todo con rollback
             conn.rollback();    //Fin transaccion e inicio de otra transaccion
 
         }//Fin catch
 
     }//Fin metodo todos qryAllPaises
+
     //--------------------------------------------------------------------------
     //Metodo que hace transaccion para buscar Una ciudad en un pais especifico
     //Si encuentra la ciudad regresa el Atributo nombre, si no se encuentra
     //regresa ""
-    public String queryCiudad(String pais) throws SQLException, IOException
-    {
+    public String queryCiudad(String pais) throws SQLException, IOException {
         //CIudad resultante
         String cityfound = "";
         //Resultado del quey
@@ -420,27 +393,23 @@ public class TransactionMySQL
 
         System.out.print("Nombre ciudad: ");
 
-        try
-        {
+        try {
             qryres = ResultQuery("select Nombre from CIUDAD where "
-                    + "Pais = '"+pais+"' and Nombre = '"+in.readLine()+"';");
+                    + "Pais = '" + pais + "' and Nombre = '" + in.readLine() + "';");
             //Si no hay error hacer el commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
 
             //Verificar que se haya encontrado una ciudad
-            if(qryres[0][0] == null)
-            {
+            if (qryres[0][0] == null) {
                 //cityfound sigue siendo ""
 
             }//Fin if 1
-            else
-            {
+            else {
                 cityfound = qryres[0][0];
             }//Fin else 1
 
         }//Fi try
-        catch(SQLException sql)
-        {
+        catch (SQLException sql) {
             //Si hay error hacer rollback
             conn.rollback(); //Fin transaccion e inicio de otra transaccion
 
@@ -449,32 +418,30 @@ public class TransactionMySQL
         return cityfound;
 
     }//Fin queryCiudad
+
     //--------------------------------------------------------------------------
     //Metodo que imprime en pantalla todas las ciudades de un pais
-    public void qryAllCiudades(String pais) throws SQLException, IOException
-    {
+    public void qryAllCiudades(String pais) throws SQLException, IOException {
         //Nivel de aislamiento que hace lecturas sobre contenido que puede
         //que todavia no este en disco
         conn.setTransactionIsolation(1);
 
-        try
-        {
-            query("select distinct(Nombre) from CIUDAD where Pais = '"+pais+"';");
+        try {
+            query("select distinct(Nombre) from CIUDAD where Pais = '" + pais + "';");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
         }//Fin try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             //Si hay error hacer rollback
             conn.rollback(); //Fin transaccion e inicio de otra transaccion
         }//Fin catch
 
     }//Fin qryAllCiudades
+
     //--------------------------------------------------------------------------
     //Metodo que regresa un lugar especifico en forma String[1][2] {Nombre,Ciudad}] { {Nombre,Ciudad} }
     //y si no encuentra el lugar especificado regresa String[1][2] {{null,null}}
-    public String[][] queryLugar(String pais) throws SQLException, IOException
-    {
+    public String[][] queryLugar(String pais) throws SQLException, IOException {
         //Lugar resultante
         String[][] resplace = new String[1][2];
         //Resultado del query
@@ -487,31 +454,27 @@ public class TransactionMySQL
 
         System.out.print("Nombre lugar: ");
 
-        try
-        {
+        try {
             qryres = ResultQuery("select Nombre,Ciudad from LUGARAVISITAR where "
-                    + "Nombre = '"+in.readLine()+"' and Ciudad = '"+city+"' and Pais = '"+pais+"';");
+                    + "Nombre = '" + in.readLine() + "' and Ciudad = '" + city + "' and Pais = '" + pais + "';");
 
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
 
             //Verificar que se haya encontrado un lugar
-            if(qryres[0][0] == null)
-            {
+            if (qryres[0][0] == null) {
                 //No se encontro el lugar
                 //Poner en "" los valores
                 resplace[0][0] = "";
                 resplace[0][1] = "";
             }//Fin if 1
-            else
-            {
+            else {
                 //Regresar lugar encontrado
                 resplace = qryres;
             }//Fin else 1
 
         }//Fin try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             //Si hay error hacer rollback
             conn.rollback(); //Fin transaccion e inicio de otra transaccion
         }//Fin catch
@@ -519,38 +482,36 @@ public class TransactionMySQL
         return resplace;
 
     }//Fin metodo queryLugar
+
     //--------------------------------------------------------------------------
     //Metodo que dado un pais y ciudad imprime todos los lugares que tiene
     //Ademas del precio
-    public void qryAllLugares(String pais, String ciudad) throws SQLException, IOException
-    {
+    public void qryAllLugares(String pais, String ciudad) throws SQLException, IOException {
         //Nivel de aislamiento que hace lecturas sobre contenido  que puede que
         //todavia no haya bajado a disco
         conn.setTransactionIsolation(1);
 
-        try
-        {
+        try {
             query("select distinct(Nombre),Ciudad,Precio from LUGARAVISITAR where "
-                    + "Ciudad = '"+ciudad+"' and Pais = '"+pais+"';");
+                    + "Ciudad = '" + ciudad + "' and Pais = '" + pais + "';");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
 
         }//Fin try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             //Si hay error hacer rollback
             conn.rollback(); //Fin transaccion e inicio de otra transaccion
         }//Fin catch
 
     }//Fin metodo qryAllLugares
+
     //--------------------------------------------------------------------------
     //Dado un nombreLugar Pais y Ciudad busca en la tabla Etapa las etapas que
     //contengan a ese lugar y regresa todos los Identificadores y fechas de Circuitos
     //diferentes que tienen salida a partir del dia actual o  de dias posteriores
     //(No regresa circuitos con fechas de salida que ya hayan pasado)
     //RESUMEN: SE OBTIENEN LAS FECHACIRCUITO validas posibles con base en un lugar y la fecha del sistema
-    public String[][] qryFechaCircuitos(String pais, String ciudad, String place, Date dat) throws SQLException, IOException
-    {
+    public String[][] qryFechaCircuitos(String pais, String ciudad, String place, Date dat) throws SQLException, IOException {
         //Regresa{{Identificador,Date},{Identificador2,Date2},...,{Identificadorn,Daten}}
         String rescir[][];
 
@@ -558,18 +519,16 @@ public class TransactionMySQL
         //todavia no haya bajado a disco
         conn.setTransactionIsolation(1);
 
-        try
-        {
+        try {
             rescir = ResultQuery("select ETAPA.Identificador,FechaSalida "
                     + "from ETAPA,FECHACIRCUITO "
-                    + "where ETAPA.NombreLugar = '"+place+"' and ETAPA.Pais = '"+pais+"' and ETAPA.Ciudad = '"+ciudad+"' and "
-                    + "FechaSalida >= '"+dat.toString()+"' and ETAPA.Identificador = FECHACIRCUITO.Identificador;");
+                    + "where ETAPA.NombreLugar = '" + place + "' and ETAPA.Pais = '" + pais + "' and ETAPA.Ciudad = '" + ciudad + "' and "
+                    + "FechaSalida >= '" + dat.toString() + "' and ETAPA.Identificador = FECHACIRCUITO.Identificador;");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
 
         }//Fin try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             //Si hay error regresar resultado inicializado con valores nulos
             rescir = new String[1][2];
 
@@ -581,67 +540,63 @@ public class TransactionMySQL
         return rescir;
 
     }//Fin metodo qryInfoCircuitos
+
     //--------------------------------------------------------------------------
     //Dado el Identificador y FechaSlaida busca en la tabla FechaCircuitro el CIrucito
     //que este en la fehca indicada
     //y con base en este se muesta la Fecha de Salida (TABLA FECHACIRCUITO)
     //y Duracion(CIRCUITO completo),Precio (Circuito COMPLETO),Ciudad Salida y Ciudad Llegada(TABLA CIRCUITO)
-    public void qryInfoAllFechaCircuitos(String id,String fecha) throws SQLException, IOException
-    {
+    public void qryInfoAllFechaCircuitos(String id, String fecha) throws SQLException, IOException {
         //Nivel de aislamiento que hace lecturas sobre contenido  que puede que
         //todavia no haya bajado a disco
         conn.setTransactionIsolation(1);
 
-        try
-        {
+        try {
             query("select FECHACIRCUITO.Identificador,FechaSalida,CIRCUITO.Duracion,CiudadSalida,CiudadLlegada,Precio "
                     + "from FECHACIRCUITO, CIRCUITO "
-                    + "where FECHACIRCUITO.Identificador = '"+id+"' and FechaSalida = '"+fecha+"' and "
+                    + "where FECHACIRCUITO.Identificador = '" + id + "' and FechaSalida = '" + fecha + "' and "
                     + "FECHACIRCUITO.Identificador = CIRCUITO.Identificador;");
 
             //Si no hay error hacer commit
             conn.commit();      //Fin transaccion e inicio de otra transaccion
 
         }//Fin try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             //Si hay error hacer rollback
             sqle.printStackTrace();
             conn.rollback();    //Fin transaccion e inicio de otra transaccion
         }//Fin catch
 
     }//Fin metodo qryInfoAllCircuitos
+
     //--------------------------------------------------------------------------
     //Dado un identificador de circuito desglozar la infromacion relacionada
     //conc ada etapa de manera ordenada
-    public void qryInfoEtapas(String id) throws SQLException, IOException
-    {
+    public void qryInfoEtapas(String id) throws SQLException, IOException {
         //Nivel de asilameinto que hace lectura sobre contenido que puede que
         //todavia no haya bajado a disco
-        try
-        {
+        try {
             query("select NombreLugar, Ciudad, Duracion "
                     + "from ETAPA "
-                    + "where Identificador = '"+id+"' "
+                    + "where Identificador = '" + id + "' "
                     + "order by Orden;");
 
             //Si no hay error hacer commit
             conn.commit();  //Fin transaccion e inicio de otra transaccion
 
         }//Fin try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             //Si hay error hacer rollback
             sqle.printStackTrace();
             conn.rollback();    //Fin transaccion e inicio de otra transaccion
         }//Fin catch
 
     }//Fin metodo qryInfodesCircuito
+
     //--------------------------------------------------------------------------
     //Dado el identificador de Circuito y fecha de salida regresar la cadena
     //que calcula la fecha de Finalizacion de un circuito
-    public String qryGetFechaLlegada(String id, String fecha) throws SQLException, IOException
-    {
+    public String qryGetFechaLlegada(String id, String fecha) throws SQLException, IOException {
         //Obtener resultado de ResultQuery {FechaLlegada}
         String[][] result;
         String fechallegada = "";
@@ -650,29 +605,25 @@ public class TransactionMySQL
         //que todavia no haya bajado a disco
         conn.setTransactionIsolation(1);
 
-        try
-        {
+        try {
             //A la fecha de salida pasada como aprametro sumarle la Duracion del Ciruito
-            result = ResultQuery("select DATE_ADD('"+fecha+"', INTERVAL Duracion day) as FechaLlegada "
+            result = ResultQuery("select DATE_ADD('" + fecha + "', INTERVAL Duracion day) as FechaLlegada "
                     + "from CIRCUITO "
-                    + "where Identificador = '"+id+"';");
+                    + "where Identificador = '" + id + "';");
 
             //Guardar la fecha de llegada como solo una cadena
             //Si regresa null significa que el idnetificador es icnorrecto
-            if(result[0][0] == null)
-            {
+            if (result[0][0] == null) {
                 //No guardar  y dejar  que fecha llegada siga siendo ""
             }//Fin if 1
-            else
-            {   //Se ingreo un identificador valido
+            else {   //Se ingreo un identificador valido
                 fechallegada = result[0][0];
             }//Fin else 1
             //Si no hay error hacer commit
             conn.commit();  //Fin transaccion e inicio de otra
 
         }//Fin try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             //Si hay error hacer rollback
             sqle.printStackTrace();
             conn.rollback(); //Fin transaccion e inicio de otra
@@ -682,30 +633,28 @@ public class TransactionMySQL
         return fechallegada;
 
     }//FIn metodo qryGetFechaLlegada
+
     //--------------------------------------------------------------------------
     //Metodo que hace elimiancion de todas las simualciones cuya fecha de expiracion
     //es menor a la fecha del sistema actual. Nota fecha de expiracion = FechaEmisionSimulacion+2dias
     //El valor de vigencia ya esta calculado
-    public void ElimExpiredSims(Date fecha) throws SQLException
-    {
+    public void ElimExpiredSims(Date fecha) throws SQLException {
         //Usar nivel de aislamiento 8 para transacciones que se ejcuten hasta
         //despues de esta
         conn.setTransactionIsolation(8);
 
-        try
-        {
+        try {
             //ELIMINAR SIMULACION YA QUE EXPIRO;
             //ELMINADO TODA LA INFROMACION RELACIONADA
             //TANTO EN SIMULACIONCIRUCITO, SIMULACIONHOTEL COMO RESERVACION
-            stmt.executeUpdate("delete from SIMULACION where Vigencia < '"+fecha.toString()+"' ;");
+            stmt.executeUpdate("delete from SIMULACION where Vigencia < '" + fecha.toString() + "' ;");
 
 
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra
 
         }//Fin try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             sqle.printStackTrace();
             //Si hay error hacer rollaback
 
@@ -716,14 +665,14 @@ public class TransactionMySQL
         //System.out.println("FIN LIMPIEZA");
 
     }//Fin metodo ElimExpiredSims
+
     //--------------------------------------------------------------------------
     //Metodo que recibe todos los datos para armar una simulacion y una vez que
     //finaliza de armarse es validad, si se valida exitosamente regresa el
     //numero de la simulacion en caso de que no sea validada se hace un rollback
     //de toda la informacion para asegurar la coherencia de la BDs, regresa -1
     //si hubo algun error
-    int Simulacion(Date fecha, int Idusr) throws SQLException, IOException
-    {
+    int Simulacion(Date fecha, int Idusr) throws SQLException, IOException {
         //Maximo de ciudades/Lugares(lugarAvisitar)/circuitos/hoteles
         //que se pueden seleccionar en cada simulacion son 100 para cada uno
         //no 100 en total
@@ -784,49 +733,41 @@ public class TransactionMySQL
         System.out.print("Ingrese el numero de personas en el viaje: ");
         numper = Integer.parseInt(in.readLine());
 
-        do
-        {
+        do {
             System.out.println();
             System.out.println("1)Seleccionar País");
             System.out.println("2)Mostrar paises disponibles");
             System.out.println("0)Salir de simulacion");
             System.out.print("Opcion: ");
-            iop = Integer.parseInt( in.readLine() );
+            iop = Integer.parseInt(in.readLine());
 
-            if(iop == 2)
-            {
+            if (iop == 2) {
                 //Mostrar todos los paises disponibles
                 System.out.println("\nResultado de la consulta: ");
                 qryAllPaises();
             }//Fin if 1
-            else
-            {//ELSE 1
-                if(iop == 1)
-                {//IF 2
+            else {//ELSE 1
+                if (iop == 1) {//IF 2
                     pais = queryPais();
 
-                    if(pais.length()== 0)
-                    {//IF 3
+                    if (pais.length() == 0) {//IF 3
                         System.out.println("Pais inexistente, seleccionar un pais valido!");
                         iop = 1;
                     }//Fin if 3
-                    else
-                    {
-                        do
-                        {
+                    else {
+                        do {
                             System.out.println();
                             System.out.println("SIMULACION: SELECCION DE CIUDADES\n");
-                            System.out.println("1)Mostrar ciudades disponibles en "+pais);
+                            System.out.println("1)Mostrar ciudades disponibles en " + pais);
                             System.out.println("2)Seleccionar ciudad");
                             System.out.println("3)Remover ciudad");
                             System.out.println("4)Mostrar ciudades seleccionadas");
                             System.out.println("5)Guardar y continuar");
                             System.out.println("0)Regresar a seleccion de pais");
                             System.out.print("Opcion: ");
-                            ioc = Integer.parseInt( in.readLine() );
+                            ioc = Integer.parseInt(in.readLine());
 
-                            switch(ioc)
-                            {
+                            switch (ioc) {
                                 case 0:
                                     //Resetear Las ciudades poniendo el inidce de
                                     //ciudades en 0
@@ -842,39 +783,33 @@ public class TransactionMySQL
                                 case 2:
                                     //Prevenir que no se exceda el maximo de
                                     //ciudades que puede tener una simulacion
-                                    if(ncit < MAXCIT)
-                                    {
+                                    if (ncit < MAXCIT) {
                                         cittemp = queryCiudad(pais);
 
                                         //Agregar ciudad a arreglo de ciudades seleccionadas
                                         //solamente si se regreso una ciudad existente
-                                        if(cittemp.length() != 0)
-                                        {
+                                        if (cittemp.length() != 0) {
                                             //ciudades[ncit] = cittemp;
                                             //Agregar ciudades verificando que no se agreguen ciudades duplicadas
-                                            ciudades = Insertararray(ciudades,ncit,cittemp);
+                                            ciudades = Insertararray(ciudades, ncit, cittemp);
 
                                             //Verificar si hubo insercion de ciduad
-                                            if(ciudades[ncit] == null )
-                                            {
+                                            if (ciudades[ncit] == null) {
                                                 //No hubo insercion porque la ciudad ya estaba seleccionada
                                             }//Fin if 5.1
-                                            else
-                                            {
+                                            else {
                                                 //Si se agreego ciudad
                                                 //Incremento contador de indice de ciudades usado en arreglo
                                                 ncit++;
                                             }//Fin else 5.2
 
                                         }//Fin if 5
-                                        else
-                                        {
+                                        else {
                                             System.out.println("\nSolo se pueden seleccionar ciudades validas!\n");
                                         }//Fin else 5
 
                                     }//Fin if 4
-                                    else
-                                    {
+                                    else {
                                         System.out.println("Numero de ciudades excedido\n");
                                     }//Fin else 4
                                     break;
@@ -882,20 +817,19 @@ public class TransactionMySQL
                                 case 3:
                                     System.out.print("Ciudad que desea remover: ");
                                     //Actualizar el contenido de las ciudades
-                                    ciudades = Eliminararray(ciudades,ncit,in.readLine());
+                                    ciudades = Eliminararray(ciudades, ncit, in.readLine());
                                     break;
 
                                 case 4:
                                     System.out.println("\nCiudades selecciondas:");
-                                    Mostrararray(ciudades,ncit);
+                                    Mostrararray(ciudades, ncit);
                                     break;
 
                                 case 5:
                                     //Listar todos los lugares que hay en ciudades
                                     //selecicionadas
 
-                                    do
-                                    {
+                                    do {
                                         System.out.println();
                                         System.out.println("SIMULACION: SELECCION DE LUGARES\n");
                                         System.out.println("1)Mostrar lugares disponibles");
@@ -905,10 +839,9 @@ public class TransactionMySQL
                                         System.out.println("5)Guardar y continuar");
                                         System.out.println("0)Regresar a seleccion de ciudades");
                                         System.out.print("Opcion: ");
-                                        iol = Integer.parseInt( in.readLine() );
+                                        iol = Integer.parseInt(in.readLine());
 
-                                        switch(iol)
-                                        {
+                                        switch (iol) {
                                             case 0:
                                                 //Resetear los lugares poniendo en 0
                                                 //indice de lugares
@@ -920,17 +853,15 @@ public class TransactionMySQL
                                                 System.out.println("\nResultado de la consulta: ");
                                                 System.out.println("Nombre\tCiudad\tPrecio\n");
                                                 //Hacer consulta para cada una de las ciudades
-                                                for(int i = 0; i < ncit; i++)
-                                                {
-                                                    qryAllLugares(pais,ciudades[i]);
+                                                for (int i = 0; i < ncit; i++) {
+                                                    qryAllLugares(pais, ciudades[i]);
                                                 }//Fin for 1
                                                 break;
 
                                             case 2:
                                                 //Prevenir que no se exceda el maximo de lugares que puede tener
                                                 //una simulcion
-                                                if(nlug < MAXCIT)
-                                                {//If 5
+                                                if (nlug < MAXCIT) {//If 5
 
                                                     lugtemp = queryLugar(pais);
 
@@ -942,23 +873,20 @@ public class TransactionMySQL
 
                                                     //Solo seleccionar lugares validos
                                                     //Un lugar no es valido si qry regresa Nombre y Ciudad con longitud 0
-                                                    if(lugtemp[0][0].length() != 0 && lugtemp[0][1].length() != 0)
-                                                    {//If 6
+                                                    if (lugtemp[0][0].length() != 0 && lugtemp[0][1].length() != 0) {//If 6
 
                                                         //Guardar en cada fila/tupla llaves de lugar encontrado
                                                         //Omitiendo solamente el atributo de pais pero ese ya esta
                                                         //almacenado en variable pais (Esto se omite en queryLugar() )
                                                         //lugares[nlug] = lugtemp[0];
-                                                        lugares = Insertarmatriz(lugares,nlug,lugtemp[0]);
+                                                        lugares = Insertarmatriz(lugares, nlug, lugtemp[0]);
 
                                                         //Verificar si hubo insercion de lugar para saber se
                                                         //hace aumento del contador de lugares seleccioandos
-                                                        if(lugares[nlug][0] == null)
-                                                        {
+                                                        if (lugares[nlug][0] == null) {
                                                             //No hubo insercion entonces  no aumentar el contador
                                                         }//Fin if 6.2
-                                                        else
-                                                        {
+                                                        else {
                                                             //Si hubo insercion entonces aumentar el contador
                                                             //Aumentar contador de lugares seleccionados
                                                             nlug++;
@@ -966,14 +894,12 @@ public class TransactionMySQL
                                                         }//Fin else 6.2
 
                                                     }//Fin if 6
-                                                    else
-                                                    {
+                                                    else {
                                                         System.out.println("\nSolo se pueden seleccionar lugares validos!\n");
                                                     }//Fin else 6
 
                                                 }//Fin if 5
-                                                else
-                                                {
+                                                else {
                                                     System.out.println("Numero de lugares excedido!");
                                                 }//Fin else  5
                                                 break;
@@ -987,10 +913,10 @@ public class TransactionMySQL
                                                 npla = in.readLine();
 
                                                 //Valores que debe poseer una tupla para ser elimiandos
-                                                String[] claves = {name,npla};
+                                                String[] claves = {name, npla};
 
                                                 //Obtener nueva matriz con elementos ya elimiandos
-                                                lugares = Eliminarmatriz(lugares,nlug, claves);
+                                                lugares = Eliminarmatriz(lugares, nlug, claves);
                                                 break;
 
                                             case 4:
@@ -998,13 +924,12 @@ public class TransactionMySQL
                                                 //Imprimir el numero lugares seleccionados, el 2
                                                 //hace referencia a impimir solo 2 atributos por
                                                 //tupla("Nombre(lugar), Ciudad")
-                                                Mostrarmatriz(lugares,nlug,2);
+                                                Mostrarmatriz(lugares, nlug, 2);
                                                 break;
 
                                             case 5:
 
-                                                do
-                                                {
+                                                do {
                                                     System.out.println();
                                                     System.out.println("SIMULACION: SELECCION DE CIRCUITOS\n");
                                                     System.out.println("1)Mostrar circuitos disponibles");
@@ -1015,10 +940,9 @@ public class TransactionMySQL
                                                     System.out.println("6)Guardar y continuar");
                                                     System.out.println("0)Regresar a seleccion de lugares");
                                                     System.out.print("Opcion: ");
-                                                    ioe = Integer.parseInt( in.readLine() );
+                                                    ioe = Integer.parseInt(in.readLine());
 
-                                                    switch(ioe)
-                                                    {
+                                                    switch (ioe) {
                                                         case 0:
                                                             //AL SALIR DE SUBMENU DE SELECICON DE CIRCUITOS:
                                                             //---Resetear Matriz con FechasCircuitos Posibles--
@@ -1045,23 +969,20 @@ public class TransactionMySQL
 
                                                             //Checar para cada una de los lugares los circuitos que son posibles
                                                             //con base en fecha
-                                                            for(int i = 0; i < nlug; i++)
-                                                            {
+                                                            for (int i = 0; i < nlug; i++) {
                                                                 //No hacer consulta para lugares eleiminados
-                                                                if(lugares[i][0].equals("") || lugares[i][1].equals(""))
-                                                                {
+                                                                if (lugares[i][0].equals("") || lugares[i][1].equals("")) {
                                                                     //No buscar en tabla porque no es valido ni el nombre
                                                                     //del lugar ni el de la ciudad
                                                                 }//Fin if 7
-                                                                else
-                                                                {
+                                                                else {
                                                                     //Buscar Idemmtificadores y fechas de salidas; pero como los lugares pueden
                                                                     //estar en mas de un circuito solamente guardar valores difernetes. Nota:
                                                                     //Si no se encuentra una Fecha e IDentificador para un lugar dado se va a
                                                                     //regresar un resultado con null entonces hay que preever ese caso
                                                                     //luagres[N][C]:NomLugar,Ciudad}
                                                                     //(Pais,Ciudad,Place,FechaSalida)
-                                                                    tempcir = qryFechaCircuitos(pais,lugares[i][1],lugares[i][0],dateCircuit);
+                                                                    tempcir = qryFechaCircuitos(pais, lugares[i][1], lugares[i][0], dateCircuit);
 
                                                                     //--------------------------------------------------------
                                                                     //System.out.println("Resultado de Query Circuitos");
@@ -1070,13 +991,11 @@ public class TransactionMySQL
                                                                     //--------------------------------------------------------
 
                                                                     //Ver que haya al menos una Fecha de Circuito valido
-                                                                    if(tempcir[0][0] == null || tempcir[0][1] == null)
-                                                                    {
+                                                                    if (tempcir[0][0] == null || tempcir[0][1] == null) {
                                                                         //No hubo FECHASCIRCUITO validas para ese lugar con base en la fecha actual
                                                                         //del sistema; Entonces no hacer nada
                                                                     }//Fin if 8
-                                                                    else
-                                                                    {
+                                                                    else {
                                                                         //SI hubo FECHAS CIRCUITO Valida, agregar verificando que no este
                                                                         //considerada esa TUPLA DE FECHACIRCUITO
 
@@ -1084,14 +1003,13 @@ public class TransactionMySQL
                                                                         int numt = tempcir.length;
 
                                                                         //VERIFICAR PARA CADA TUPLA SI ESTA YA ESTAB EN MATRIZ DE FECHACIRCUITOS disponibles
-                                                                        for(int j = 0; j < numt; j++)
-                                                                        {
+                                                                        for (int j = 0; j < numt; j++) {
                                                                             //--------------------
                                                                             //System.out.println("Agregar sin repetir#"+j);
                                                                             //--------------------
                                                                             //(Matriz con Circuitos Posibles, numero tuplas en Matriz, Arreglo de tupla que
                                                                             //desea verificarse si ya esta en el arreglo de la matriz)
-                                                                            poscir = Insertarmatriz(poscir,ncir,tempcir[j]);
+                                                                            poscir = Insertarmatriz(poscir, ncir, tempcir[j]);
 
                                                                             //Verificar si hubo insercion para saber si se aumenta el contador de tuplas
                                                                             //de Circuitos posibles
@@ -1099,12 +1017,10 @@ public class TransactionMySQL
                                                                             //System.out.println("Aumentar#CircuitosPsobles?Ver si hubo insercion");
                                                                             //System.out.println(poscir[ncir][0]+"== null?");
                                                                             //-------------------------------
-                                                                            if(poscir[ncir][0] == null)
-                                                                            {
+                                                                            if (poscir[ncir][0] == null) {
                                                                                 //No hubo insercion porque el valor ya estaba en la matriz
                                                                             }//Fin if 9
-                                                                            else
-                                                                            {
+                                                                            else {
                                                                                 //Si hubo insercion entonces auemntar el contador de Circuitos posibles
                                                                                 ncir++;
 
@@ -1126,29 +1042,26 @@ public class TransactionMySQL
                                                             //Con base en la matriz de FechasCircuitos posbiles hacer query que muestre en
                                                             //pantalla la info de esta matriz
                                                             System.out.println("\nCircuitos disponibles para lugares seleccionados:");
-                                                            System.out.println("Fecha actual: "+fecha.toString());
-                                                            System.out.println("Fecha de llegada ultimo circuito seleccionado: "+dateCircuit.toString()+"\n");
+                                                            System.out.println("Fecha actual: " + fecha.toString());
+                                                            System.out.println("Fecha de llegada ultimo circuito seleccionado: " + dateCircuit.toString() + "\n");
 
                                                             //Ver si hubo al menos una FechaCircuito compatible con lugares y fecha
-                                                            if(ncir > 0)
-                                                            {
+                                                            if (ncir > 0) {
                                                                 //Si hubo al menos una FechaCircuito
                                                                 System.out.println("\nID\tFecha Salida\tDias\tSalida\tLlegada\tPrecio");
 
                                                                 //Para cada elemento de los CIrcuitos Posibles
-                                                                for(int i = 0; i < ncir; i++)
-                                                                {
+                                                                for (int i = 0; i < ncir; i++) {
 
                                                                     //Poscir:{Identificador,FechaSalida} <-Posibles Circuitos
                                                                     //qryInfoAllFechaCircuitos(Indentificador,Fecha)
-                                                                    qryInfoAllFechaCircuitos(poscir[i][0],poscir[i][1]);
+                                                                    qryInfoAllFechaCircuitos(poscir[i][0], poscir[i][1]);
                                                                     //---PARA CADA CIRCUITO HACER DESPLIEGUE DE TODAS LAS ETAPAS QUE TIENE--
                                                                     //Aqui o en otra opcion del menu<-mejor
                                                                 }//Fin for 3
 
                                                             }//Fin if 11
-                                                            else
-                                                            {
+                                                            else {
                                                                 System.out.println("No se encontraron circuitos disponibles!");
                                                             }//Fin else 11
                                                             break;
@@ -1186,18 +1099,16 @@ public class TransactionMySQL
 
                                                             //Llave a aguardar para saber que CIrcuito y en que fecha de salida
                                                             //escogio el usuario
-                                                            String[] tupla = {ident,datsal};
+                                                            String[] tupla = {ident, datsal};
 
                                                             //Ver que numero maximo de circuitos seleccionados por simulacion
                                                             //no se haya excedido
-                                                            if(ncirsel < MAXCIT)
-                                                            {
-                                                                Insertarmatriz(circuits,ncirsel,tupla);
+                                                            if (ncirsel < MAXCIT) {
+                                                                Insertarmatriz(circuits, ncirsel, tupla);
                                                                 //Aumentar contador de cirucitos seleccionados
                                                                 ncirsel++;
                                                             }//Fin if 12
-                                                            else
-                                                            {
+                                                            else {
                                                                 System.out.println("Numero maximo de circuitos por simulacion excedido!");
                                                             }//Fine lse 12
 
@@ -1205,15 +1116,13 @@ public class TransactionMySQL
                                                             //sean posibles por la fecha de llegada (FechaSalida+Duracion)
                                                             //de los nuevos circuitos que han sido seleccionados --------
 
-                                                            datlle = qryGetFechaLlegada(ident,datsal);
+                                                            datlle = qryGetFechaLlegada(ident, datsal);
 
                                                             //Ver que se haya seleccionado correctamente un identificador
-                                                            if(datlle.equals("") )
-                                                            {
+                                                            if (datlle.equals("")) {
                                                                 System.out.println("Identificador de circuito inexistente!");
                                                             }//Fin if 13
-                                                            else
-                                                            {
+                                                            else {
                                                                 //Asiganr la fecha de llegada de este circuito seleccionado como fecha para buscar
                                                                 //cirucitos posibles.
                                                                 dateCircuit = java.sql.Date.valueOf(datlle);
@@ -1236,12 +1145,12 @@ public class TransactionMySQL
                                                             fsal = in.readLine();
 
                                                             //Poner valores a ser eliminados en forma de tupla
-                                                            String[] ttodel = {id,fsal};
+                                                            String[] ttodel = {id, fsal};
 
                                                             //Obtener nuva matriz de Circuitos seleccionadaos despues
                                                             //de la eliminacio. Nota: si se dan valores para los atributos
                                                             //incorrectos no se hara la eliminacion
-                                                            circuits = Eliminarmatriz(circuits,ncirsel,ttodel);
+                                                            circuits = Eliminarmatriz(circuits, ncirsel, ttodel);
 
                                                             //Despues: asignar a dateCircuit la fecha de llegada
                                                             //mayor que haya quedado despues de la eliminacion y si se
@@ -1254,15 +1163,12 @@ public class TransactionMySQL
                                                             //no este eliminado hacer query para determinar fecha de llegada
                                                             //y si este es mayor que el datecircuit actual asignarlo como nuevo
                                                             //datecircuit
-                                                            for(int k = 0; k < ncirsel; k++)
-                                                            {
-                                                                if(!circuits[k][0].equals(""))
-                                                                {    //No tiene un Identificador vacio -> No ha sido eliminado
-                                                                    fsaltemp = qryGetFechaLlegada(circuits[k][0],circuits[k][1]);
+                                                            for (int k = 0; k < ncirsel; k++) {
+                                                                if (!circuits[k][0].equals("")) {    //No tiene un Identificador vacio -> No ha sido eliminado
+                                                                    fsaltemp = qryGetFechaLlegada(circuits[k][0], circuits[k][1]);
 
                                                                     //Si La fecha de salida obtenida del query esta despues que la dateCircuit actual
-                                                                    if(java.sql.Date.valueOf(fsaltemp).after(dateCircuit) )
-                                                                    {
+                                                                    if (java.sql.Date.valueOf(fsaltemp).after(dateCircuit)) {
                                                                         //Se ha encontrado una nueva dateCircuit
                                                                         dateCircuit = java.sql.Date.valueOf(fsaltemp);
 
@@ -1281,7 +1187,7 @@ public class TransactionMySQL
                                                             //Imprimir el numero de lugares seleccionados, el 2
                                                             //hace referencia a impimir solo 2 atributos por
                                                             //tupla("Identificador, FechaSalida")
-                                                            Mostrarmatriz(circuits,ncirsel,2);
+                                                            Mostrarmatriz(circuits, ncirsel, 2);
                                                             break;
 
                                                         case 6:
@@ -1289,24 +1195,22 @@ public class TransactionMySQL
                                                             //RESERVACIONCIRCUITO hay todavia cupo para ese circuito
                                                             //en esa fecha(esto se hace hasta reservacion)
                                                             int index = 0;
-                                                            for(int r = 0; r < ncirsel; r++)
-                                                            {
+                                                            for (int r = 0; r < ncirsel; r++) {
                                                                 String[][] etapas = ResultQuery("SELECT fechacircuito.Identificador, FechaSalida, nbPersonas, Orden, Ciudad, Pais, Duracion FROM" +
                                                                         " fechacircuito, etapa WHERE fechacircuito.Identificador = " + circuits[r][0] + " AND etapa.Identificador = " + circuits[r][0] +
-                                                                        " AND fechacircuito.FechaSalida = '" + circuits[r][1] + "'" );
+                                                                        " AND fechacircuito.FechaSalida = '" + circuits[r][1] + "'");
 
                                                                 //Solo calcular la sim de hotel para lugares que si tengan valore validos
                                                                 //si el ResultQuery no regresa nada etapas[0][0] entonces no llamara metodo que simula
                                                                 //un hotel por lugar
-                                                                if(etapas[r][0] != null)
-                                                                {
-                                                                    index = simHotel(etapas[r][1],etapas,0,index);
+                                                                if (etapas[r][0] != null) {
+                                                                    index = simHotel(etapas[r][1], etapas, 0, index);
                                                                 }
                                                             }//Fin for
 
                                                             //En casso de que etapas[0][0] = null se haria una simulacion pero no se tendrian hoteles seleccionados
                                                             //por lo que para el id de simulacion correspodneinte no habria ninguna tupla en tabla SIMULACIONHOTEL
-                                                            Mostrarmatriz(hotelesMtrx, hotelesMtrx.length,6);
+                                                            Mostrarmatriz(hotelesMtrx, hotelesMtrx.length, 6);
                                                             //Indicar que simulacion ha acabado correctamente
                                                             correctsim = 0;
 
@@ -1324,7 +1228,7 @@ public class TransactionMySQL
 
                                                     }//Fin swithc 3 Circuito(Etapas)
 
-                                                }while(ioe != 0); //Fin do while #3 (Circuitos)
+                                                } while (ioe != 0); //Fin do while #3 (Circuitos)
 
                                                 break;
 
@@ -1335,7 +1239,7 @@ public class TransactionMySQL
                                         }//Fin switch 2 Lugares(LugarAVisitar)
 
                                     }
-                                    while(iol != 0); //Fin do while 2 Lugares(lugarAvisitar)
+                                    while (iol != 0); //Fin do while 2 Lugares(lugarAvisitar)
 
                                     break;
 
@@ -1346,16 +1250,14 @@ public class TransactionMySQL
                             }//Fin switch 1 Ciudades
 
 
-                        }while(ioc != 0); //Fin do while #2
+                        } while (ioc != 0); //Fin do while #2
 
                     }//Fin else 3
 
                 }//Fin if 2
 
-                if(iop == 0)
-                {
-                    if(correctsim != 0)
-                    {
+                if (iop == 0) {
+                    if (correctsim != 0) {
                         //Hacer aqui un rollback de todo lo que se haya hecho
                         System.out.println("\nSimulacion descartada!\n");
                     }//Fin if
@@ -1364,14 +1266,13 @@ public class TransactionMySQL
 
             }//FIn else 1
 
-        }while(iop != 0 );//Fin do while #2
+        } while (iop != 0);//Fin do while #2
 
         //Si correctsim sale con -1 entonces sabemos que nada debe
         //ser guardado en tonces todo lo que viene a continucacion se brica
         //y solo se hace un rollback por si las dudas
 
-        if(correctsim == 0)
-        {//If guardar simulacion en tablas
+        if (correctsim == 0) {//If guardar simulacion en tablas
 
             //Precio total de todos los circuitos
             int totalcircui = 0;
@@ -1394,18 +1295,14 @@ public class TransactionMySQL
 
             //Obtener FechaSalida de toda la simulacion calculando la fechaDeSalida
             //que sea la primera de todos los cirucitos seleccionados por el usuario
-            for(int idx = 0; idx < ncirsel; idx++)
-            {
-                if(circuits[idx][1].equals(""))
-                {
+            for (int idx = 0; idx < ncirsel; idx++) {
+                if (circuits[idx][1].equals("")) {
                     //No comparar fecha salida porque esta vacia
                 }//Fin if 20
-                else
-                {
+                else {
                     //Si la fecha de salida que se esta leyendo esta antes
                     //que la fsalglobal actual setablecerla como nueva fsalglobal
-                    if(java.sql.Date.valueOf(circuits[idx][1]).before(fsalglobal))
-                    {
+                    if (java.sql.Date.valueOf(circuits[idx][1]).before(fsalglobal)) {
                         fsalglobal = java.sql.Date.valueOf(circuits[idx][1]);
                     }//Fin if 21
 
@@ -1420,25 +1317,20 @@ public class TransactionMySQL
             //alguna tabla
             conn.setTransactionIsolation(4);
 
-            try
-            {
+            try {
                 //------ Calcular costo total de precio de todos los circuitos -----
                 //Calcular costo de cada circuito multiplicado por numero de personas
-                for(int idc = 0; idc < ncirsel; idc++)
-                {
-                    if(circuits[idc][0].equals(""))
-                    {
+                for (int idc = 0; idc < ncirsel; idc++) {
+                    if (circuits[idc][0].equals("")) {
                         //No hacer nada porque no es un circuito existente
                     }//Fin if 21
-                    else
-                    {
+                    else {
                         precirc = ResultQuery("select Precio "
                                 + "from CIRCUITO "
-                                + "where Identificador = '"+circuits[idc][0]+"'; ");
+                                + "where Identificador = '" + circuits[idc][0] + "'; ");
 
                         //Convertir Result query a int y preever que no se regrese null
-                        if( !(precirc[0][0] == null) )
-                        {
+                        if (!(precirc[0][0] == null)) {
                             //Si se regreso un numero sumarlo al total de ciruci
                             totalcircui = totalcircui + Integer.parseInt(precirc[0][0]);
 
@@ -1449,20 +1341,19 @@ public class TransactionMySQL
                 }//Fin for 21
                 //El precio total de circuitos multiplicarlo por el numero
                 //de personas
-                totalcircui = totalcircui*numper;
+                totalcircui = totalcircui * numper;
                 //------- Fin costo total precio de todos los circuitos ---------
 
                 //------- Calcular costo total de hoteles ----------------------
                 //Costo hotel por dia = PrecioCuarto + (PrecioDesayuno*numPerosonas)
-                for (int indexCostos = 0; indexCostos < numberHoteles; indexCostos++)
-                {
-                    totalhot = totalhot + Integer.parseInt(hotelesMtrx[indexCostos][6]) + (Integer.parseInt(hotelesMtrx[indexCostos][7])*numper);
+                for (int indexCostos = 0; indexCostos < numberHoteles; indexCostos++) {
+                    totalhot = totalhot + Integer.parseInt(hotelesMtrx[indexCostos][6]) + (Integer.parseInt(hotelesMtrx[indexCostos][7]) * numper);
                 }
                 //System.out.println("\t\t" + totalhot);
                 //------- FIN calculo costo de hoteels--------------------------
 
                 //CALCULAR PRECIO TOTAL
-                preciotot = totalcircui+totalhot;
+                preciotot = totalcircui + totalhot;
                 //------- Fin calcular costo total-------------------
 
                 //-----INICIAR EL GUARDADO DE DATOS DE SIMULACION EN TABLAS CORRESPONDIENTES----------
@@ -1470,14 +1361,13 @@ public class TransactionMySQL
                 //-------- BAJAR TODO TABLA SIMULACION -------------------------
                 //y obtener el id de la simulacion generado por el autoincrement
                 stmt.executeUpdate("Insert into SIMULACION (Id,FechaSalida,FechaLlegada,Costo,Vigencia,NumPersonas,Pais) "
-                                + "values ("+Idusr+",'"+fsalglobal.toString()+"','"+dateCircuit.toString()+"',"+preciotot+",DATE_ADD('"+fecha+"',INTERVAL 2 day),"+numper+",'"+pais+"') ",
+                                + "values (" + Idusr + ",'" + fsalglobal.toString() + "','" + dateCircuit.toString() + "'," + preciotot + ",DATE_ADD('" + fecha + "',INTERVAL 2 day)," + numper + ",'" + pais + "') ",
                         Statement.RETURN_GENERATED_KEYS);
 
                 idgen = stmt.getGeneratedKeys();
 
                 //Obtener de los metadatos la llave de la simulacion
-                while(idgen.next())
-                {
+                while (idgen.next()) {
                     //Guardar como Integer el valor del atributo/COLUMNA 1
                     idsim = idgen.getInt(1);
                 }//Fin while 1
@@ -1486,16 +1376,13 @@ public class TransactionMySQL
                 //---BAJAR CIRCUITOS SELECICONADOS EN TABLA RESERVACIONCIRCUITO----
 
                 //Para Cada circuito seleccionado agregarlo a la tabla DE SIMULACION
-                for(int i = 0; i < ncirsel; i++)
-                {
-                    if(circuits[i][0].equals(""))
-                    {
+                for (int i = 0; i < ncirsel; i++) {
+                    if (circuits[i][0].equals("")) {
 
                     }//Fin if 22
-                    else
-                    {
+                    else {
                         //Guardar este circuito en tabla
-                        stmt.executeUpdate("Insert into SIMULACIONCIRCUITO (NumSim,Identificador,FechaSal) values ("+idsim+",'"+circuits[i][0]+"','"+circuits[i][1]+"');");
+                        stmt.executeUpdate("Insert into SIMULACIONCIRCUITO (NumSim,Identificador,FechaSal) values (" + idsim + ",'" + circuits[i][0] + "','" + circuits[i][1] + "');");
 
                     }//FIn else 22
 
@@ -1504,17 +1391,17 @@ public class TransactionMySQL
 
                 //--- BAJAR CUARTOS DE HOTEL SELECCIOANDOS EN TABLA RESERVACIONHOTEL
 
-                for (int p = 0; p < numberHoteles; p++){
+                for (int p = 0; p < numberHoteles; p++) {
                     stmt.executeUpdate("INSERT INTO simulacionhotel (NumSim, NomHotel, NomCiudad, Pais, NumCuarto, FechaInicio, FechaFinal, NumOcupantes) " + "VALUES (" +
-                            " " + idsim + ",'" + hotelesMtrx[p][0] + "','" + hotelesMtrx[p][1]+ "','"+ hotelesMtrx[p][2] + "'," + hotelesMtrx[p][3] + ",'" + hotelesMtrx[p][4] + "','" + hotelesMtrx[p][5] + "'," + numper + ")"  );
+                            " " + idsim + ",'" + hotelesMtrx[p][0] + "','" + hotelesMtrx[p][1] + "','" + hotelesMtrx[p][2] + "'," + hotelesMtrx[p][3] + ",'" + hotelesMtrx[p][4] + "','" + hotelesMtrx[p][5] + "'," + numper + ")");
                 }
                 //--- FIN  BAJAR CUARTOS DE HOTEL EN RESERVACIONHOTEL
 
                 System.out.println("\nSimulacion calculada exitosamente!\n");
-                System.out.println("ID de simulacion: "+idsim+"\n");
-                System.out.println("Costo total boletos de circuitos: "+totalcircui);
-                System.out.println("Costo total cuartos de hotel y desayunos: "+totalhot);
-                System.out.println("Costo total simulacion para "+numper+" personas: $ "+preciotot);
+                System.out.println("ID de simulacion: " + idsim + "\n");
+                System.out.println("Costo total boletos de circuitos: " + totalcircui);
+                System.out.println("Costo total cuartos de hotel y desayunos: " + totalhot);
+                System.out.println("Costo total simulacion para " + numper + " personas: $ " + preciotot);
                 System.out.println("Consultar desglose detallado de simulacion en: 3)Reservacion-> 2)Consultar simulaciones");
                 System.out.println();
                 //Todo se realizo correctamente hacer commit
@@ -1522,8 +1409,7 @@ public class TransactionMySQL
                 conn.commit();  //Fin e inicio de nueva transaccion
 
             }//FIn try
-            catch(SQLException sqle)
-            {
+            catch (SQLException sqle) {
                 sqle.printStackTrace();
                 //Hubo algun error hacer rollback
                 System.out.println("\nDatos seleccionados incorrectos. Simulacion Descartada!");
@@ -1551,13 +1437,13 @@ public class TransactionMySQL
         return numsim;
 
     }//Fin metodo Simulacion
+
     //--------------------------------------------------------------------------
     //Metodo que dado un ID de cliente e ID de Simulacion busca en tabla SIMULACION
     //QUE EXISTA; si no existe fin; SI EXISTE: validar cupo en fecha para ese
     //circuito y disponibilidad de hoteles en fechas escogidas; Regresa -1 si
     //simulacion no se realiza o regresa num > 0 si se realiza la validacion
-    public int ValidarSimulacion(int idu, int idsim) throws SQLException
-    {
+    public int ValidarSimulacion(int idu, int idsim) throws SQLException {
         String[][] ressim, rescir, reshot;
         //Matriz extra para query de reservacion hotel que verifica que la
         //capacidad del cuarto sea suficinte para personas en la simulacion
@@ -1580,13 +1466,11 @@ public class TransactionMySQL
         //la tabla USUARIo
         conn.setTransactionIsolation(4);
 
-        try
-        {
-            ressim = ResultQuery("select Id from SIMULACION where Id = "+idu+" and NumSim = "+idsim+";");
+        try {
+            ressim = ResultQuery("select Id from SIMULACION where Id = " + idu + " and NumSim = " + idsim + ";");
 
             //Si se encontro una simulacion
-            if(ressim[0][0] != null)
-            {
+            if (ressim[0][0] != null) {
                 //++++++INICIO VALIDACION TODOS LOS CIRCUITOS+++++
                 //1) Obtener fecha y el id de cada circuito selected
                 //rescir = ResultQuery("select Id from ")
@@ -1608,7 +1492,7 @@ public class TransactionMySQL
                                 "from " +
                                 "(select SC.Identificador Id, SC.FechaSal Fs, FC.nbPersonas Limite , SM.NumPersonas nper " +
                                 "from SIMULACIONCIRCUITO SC, FECHACIRCUITO FC , SIMULACION SM " +
-                                "where SC.Identificador = FC.Identificador and SC.FechaSal = FC.FechaSalida and SC.NumSim = "+idsim+" and SM.Numsim = SC.Numsim) R1, " +
+                                "where SC.Identificador = FC.Identificador and SC.FechaSal = FC.FechaSalida and SC.NumSim = " + idsim + " and SM.Numsim = SC.Numsim) R1, " +
 
                                 "(select SUM(NumPersonas) Actual, RC.Identificador Id ,RC.FechaSal Fs " +
                                 "from RESERVACIONCIRCUITO RC, FECHACIRCUITO FC, RESERVACION R " +
@@ -1619,18 +1503,16 @@ public class TransactionMySQL
 
                 rescir = ResultQuery(consulta);
 
-                if(rescir[0][0] != null)
-                {
+                if (rescir[0][0] != null) {
                     System.out.println("Reservacion no completada! No hay cupo en los siguientes circuitos en las fechas seleccionadas: ");
                     //Matriz/NumTuplas/2Atributos[Identifiacador,FechaSalida]
-                    Mostrarmatriz(rescir,rescir.length,2);
+                    Mostrarmatriz(rescir, rescir.length, 2);
                     System.out.println("\nRealizar una simulacion con un circuito y/o fecha de salida diferentes!");
 
                     System.out.println();
 
                 }//Fin if 2
-                else
-                {
+                else {
                     //Si se regresa vacio quiere decir que los circuitos son validos
                     //y se puede proceder a copiar datos de SIMULACIONCUIRCUITO EN RESERVACIONCIRCUITO Y a
                     //una validacion de los hoteles
@@ -1641,24 +1523,22 @@ public class TransactionMySQL
                     //CON UNA RESERVACION QUE YA FUE VALIDADA
                     String consulhotel = "select SH.NomHotel, SH.NomCiudad, SH.NumCuarto, SH.FechaInicio, SH.FechaFinal " +
                             "from SIMULACIONHOTEL SH, RESERVACIONHOTEL RH " +
-                            "where SH.NumSim = "+idsim+" and SH.NomHotel = RH.NomHotel and SH.NomCiudad = RH.NomCiudad " +
+                            "where SH.NumSim = " + idsim + " and SH.NomHotel = RH.NomHotel and SH.NomCiudad = RH.NomCiudad " +
                             "and SH.Pais = RH.Pais and SH.NumCuarto = RH.NumCuarto and (SH.FechaInicio between " +
                             "RH.FechaInicio and RH.FechaFinal or SH.FechaFinal between RH.FechaInicio and RH.FechaFinal);";
 
                     reshot = ResultQuery(consulhotel);
 
-                    if(reshot[0][0] != null )
-                    {
+                    if (reshot[0][0] != null) {
                         System.out.println("Reservacion no completada! Los siguientes cuartos ya han sido reservados en las fechas seleccionadas: ");
                         System.out.println("\nNombre\tCiudad\t#Cuarto\tInicio\tFin");
-                        Mostrarmatriz(reshot,reshot.length,5);
+                        Mostrarmatriz(reshot, reshot.length, 5);
 
                         System.out.println("\nRealizar una simulacion con cuarto y/o hotel diferentes!");
                         System.out.println();
 
                     }//Fin if a
-                    else
-                    {
+                    else {
                         //Se regreso vacio entonces no hubo ninguna reservacion
                         //que impidiera la reservacion de esta  POR FALTA DE DISPONIBILDIAD
 
@@ -1666,25 +1546,23 @@ public class TransactionMySQL
                         //PARA ALMACENAR A LAS PERSONAS CONSIDERADAS PARA LA SIMULACION
                         String consulcapcuar = "select SH.NomHotel, SH.NomCiudad, SH.NumCuarto, C.Capacidad " +
                                 "from SIMULACIONHOTEL SH, CUARTO C " +
-                                "where NumSim = "+idsim+" and SH.NomHotel = C.Nombre and SH.NomCiudad = C.Ciudad and " +
+                                "where NumSim = " + idsim + " and SH.NomHotel = C.Nombre and SH.NomCiudad = C.Ciudad and " +
                                 "SH.NumCuarto = C.NumCuarto and Capacidad < NumOcupantes;";
 
 
                         rescap = ResultQuery(consulcapcuar);
 
-                        if(rescap[0][0] != null)
-                        {
+                        if (rescap[0][0] != null) {
                             System.out.println("Reservacion no completada! Los siguientes cuartos tienen una capacidad menor a la que solicito: ");
                             System.out.println("\nNombre\tCiudad\t#Cuarto\tCapacidad");
-                            Mostrarmatriz(rescap,rescap.length,4);
+                            Mostrarmatriz(rescap, rescap.length, 4);
 
                             System.out.println("\nRealizar una simulacion con un cuarto con mayor capacidad");
 
                             System.out.println();
 
                         }//Fin if b
-                        else
-                        {
+                        else {
                             //Se regreso vacio entonces todos las reservaciones de cuartos
                             //han sido validadas. PROCEDER CON MIGRRACION DE DATOS DE TABLAS
                             //DE SIMULACION A RESERVACION
@@ -1693,9 +1571,9 @@ public class TransactionMySQL
                             //1)Crear nueva tupla en RESERVACION con copia de info DE SIMULACION y obtener el ID de
                             //RESERVACION generado por el autoincremento(NumRes)
                             consulta = "insert into RESERVACION (Id,FechaSalida,FechaLlegada,Costo,NumPersonas,Pais) "
-                                    +  "select Id, FechaSalida, FechaLlegada, Costo, NumPersonas, Pais "
-                                    +  "from SIMULACION "
-                                    +  "where NumSim = "+idsim+";";
+                                    + "select Id, FechaSalida, FechaLlegada, Costo, NumPersonas, Pais "
+                                    + "from SIMULACION "
+                                    + "where NumSim = " + idsim + ";";
 
                             stmt.executeUpdate(consulta, Statement.RETURN_GENERATED_KEYS);
 
@@ -1703,8 +1581,7 @@ public class TransactionMySQL
                             mdresgen = stmt.getGeneratedKeys();
 
                             //Obtener de los metadatos la llave de la RESERVACION
-                            while(mdresgen.next())
-                            {
+                            while (mdresgen.next()) {
                                 //Guardar como Integer el valor del atributo/COLUMNA 1
                                 //Se guarda el ID de la Simulacion que se ha obtenido
                                 simobtained = mdresgen.getInt(1);
@@ -1713,16 +1590,14 @@ public class TransactionMySQL
                             //2)Copiar info de SIMULACIONCUIRCUITO EN RESERVACIONCIRCUITO para la SIMULACION CORRESPONDIENTE
                             consulta = "select Identificador, FechaSal "
                                     + "from SIMULACIONCIRCUITO "
-                                    + "where NumSim = "+idsim+"; ";
+                                    + "where NumSim = " + idsim + "; ";
 
                             totcirs = ResultQuery(consulta);
 
-                            if(totcirs[0][0] == null)
-                            {
+                            if (totcirs[0][0] == null) {
                                 System.out.println("Reservacion sin circuitos. Reservacion Cancelada!\n");
                             }//fin if 3
-                            else
-                            {
+                            else {
                                 //----------
                                 //System.out.println("Consultar circuitos de simulacion a ser guardados en reservacion");
                                 //Matriz/NumTuplas/2Atributos[Identifiacador,FechaSalida]
@@ -1730,39 +1605,35 @@ public class TransactionMySQL
                                 //----------
                                 //Insertar en tabla RESERVACIONCIRCUITO cada Circuito
                                 //que conforma esta reservacion
-                                for(int i = 0; i < totcirs.length; i++)
-                                {
+                                for (int i = 0; i < totcirs.length; i++) {
                                     stmt.executeUpdate("insert into RESERVACIONCIRCUITO(NumRes,Identificador,FechaSal) "
-                                            + "values ("+simobtained+",'"+totcirs[i][0]+"','"+totcirs[i][1]+"');");
+                                            + "values (" + simobtained + ",'" + totcirs[i][0] + "','" + totcirs[i][1] + "');");
 
                                 }//Fin for 1
 
                                 //3) Copiar info de SIMULACIONHOTEL EN RESERVACIONHOTEL PARA CADA HOTEL CORRESPONDIENTE++++
                                 tothot = ResultQuery("select NomHotel, NomCiudad, Pais, NumCuarto, FechaInicio, FechaFinal, NumOcupantes " +
-                                        "from SIMULACIONHOTEL "+
-                                        "where NumSim = "+idsim+"; ");
+                                        "from SIMULACIONHOTEL " +
+                                        "where NumSim = " + idsim + "; ");
 
-                                if(tothot[0][0] == null)
-                                {
+                                if (tothot[0][0] == null) {
                                     System.out.println("Reservacion sin cuartos. Reservacion cancelada!\n");
                                 }//Fin if 4
-                                else
-                                {
+                                else {
                                     //Insertar en tabla RESERVACIONHOTEL cada Cuarto de hotel
                                     //que conforma esta reservacion
 
-                                    for(int j = 0; j < tothot.length; j++)
-                                    {
+                                    for (int j = 0; j < tothot.length; j++) {
                                         stmt.executeUpdate("insert into RESERVACIONHOTEL(NumRes, NomHotel, NomCiudad, Pais, NumCuarto, FechaInicio, FechaFinal, NumOcupantes) "
-                                                + "values ("+simobtained+",'"+tothot[j][0]+"','"+tothot[j][1]+"','"+tothot[j][2]+"', "+tothot[j][3]+" ,'"+tothot[j][4]+"'"
-                                                + ",'"+tothot[j][5]+"', "+tothot[j][6]+" ); ");
+                                                + "values (" + simobtained + ",'" + tothot[j][0] + "','" + tothot[j][1] + "','" + tothot[j][2] + "', " + tothot[j][3] + " ,'" + tothot[j][4] + "'"
+                                                + ",'" + tothot[j][5] + "', " + tothot[j][6] + " ); ");
 
                                     }//Fin for 2
 
 
                                     //4)***ELIMINAR SIMULACION YA QUE FUE RESERVADO; ELMINADO TODA LA INFROMACION RELACIONADA
                                     //TANTO EN SIMULACIONCIRUCITO, SIMULACIONHOTEL COMO RESERVACION
-                                    stmt.executeUpdate("delete from SIMULACION where NumSim = "+idsim+";");
+                                    stmt.executeUpdate("delete from SIMULACION where NumSim = " + idsim + ";");
 
                                 }//Fin else 4
 
@@ -1779,8 +1650,7 @@ public class TransactionMySQL
                 }//Fin else 2
 
             }//Fin if
-            else
-            {
+            else {
                 System.out.println("Simulacion no valida. Consulte sus simulaciones realizadas!\n");
             }//Fin else  1
 
@@ -1790,8 +1660,7 @@ public class TransactionMySQL
             hotelesMtrx = new String[100][8];
 
         }//Fin try
-        catch(SQLException sql)
-        {
+        catch (SQLException sql) {
             sql.printStackTrace();
 
             //Hubo algun error hacer rollback
@@ -1802,12 +1671,12 @@ public class TransactionMySQL
 
         return simobtained;
     }//Fin metodo validarSimulacion
+
     //--------------------------------------------------------------------------
     //Metodo que checa Clientes conocidos en la base de datos Cliente y ve si ya hay una entrada
     //para el Usuario con el ID actual regresa -1 en caso de que el usuario
     //todavia no este registrado como cliente
-    public int VerificarCliente(int iduser)throws SQLException
-    {
+    public int VerificarCliente(int iduser) throws SQLException {
         String[][] result;
         int idobt = -1;
 
@@ -1817,22 +1686,19 @@ public class TransactionMySQL
         //la tabla USUARIo
         conn.setTransactionIsolation(4);
 
-        try
-        {
-            result = ResultQuery("select Id from CLIENTE where Id = '"+iduser+"';");
+        try {
+            result = ResultQuery("select Id from CLIENTE where Id = '" + iduser + "';");
 
             //Si se encontro un ID
-            if(result[0][0] != null)
-            {
-                idobt = Integer.parseInt( result[0][0] );
+            if (result[0][0] != null) {
+                idobt = Integer.parseInt(result[0][0]);
             }//Fin if
 
             //No hubo error hacer commit
             conn.commit();
 
         }//Fin try
-        catch(SQLException sql)
-        {
+        catch (SQLException sql) {
             sql.printStackTrace();
 
             //Hubo algun error hacer rollback
@@ -1843,28 +1709,26 @@ public class TransactionMySQL
         return idobt;
 
     }//Fin metodo VerificarCliente
+
     //--------------------------------------------------------------------------
     //Query que despliega toda las reservaciones de un cliente
-    public void MostrarResCliente(int id) throws SQLException
-    {
+    public void MostrarResCliente(int id) throws SQLException {
         //Hacer lecturas sobre informacion a la que ya se le ha hecho
         //commit y sobre la cual no se pueden hacer modificaciones(sin embargo)
         //Si puede causar lecturas fantasmas si algun atributo es añadido en
         //la tabla USUARIo
         conn.setTransactionIsolation(4);
 
-        try
-        {
+        try {
             query("select NumRes "
                     + "from RESERVACION "
-                    + "where Id = "+id+";");
+                    + "where Id = " + id + ";");
 
             //No hubo error, hacer commit
             conn.commit(); //Fin e inicio de nueva transaccion
 
         }//Fin try
-        catch(SQLException sql)
-        {
+        catch (SQLException sql) {
             sql.printStackTrace();
 
             //Hubo algun error hacer rollback
@@ -1873,28 +1737,26 @@ public class TransactionMySQL
         }//Fin carch
 
     }//Fin metodo MostrarSimCliente
+
     //--------------------------------------------------------------------------
     //Query que despliega toda las simulaciones de un usuario
-    public void MostrarSimsUsuario(int id) throws SQLException
-    {
+    public void MostrarSimsUsuario(int id) throws SQLException {
         //Hacer lecturas sobre informacion a la que ya se le ha hecho
         //commit y sobre la cual no se pueden hacer modificaciones(sin embargo)
         //Si puede causar lecturas fantasmas si algun atributo es añadido en
         //la tabla USUARIo
         conn.setTransactionIsolation(4);
 
-        try
-        {
+        try {
             query("select NumSim "
                     + "from SIMULACION "
-                    + "where Id = "+id+";");
+                    + "where Id = " + id + ";");
 
             //No hubo error, hacer commit
             conn.commit(); //Fin e inicio de nueva transaccion
 
         }//Fin try
-        catch(SQLException sql)
-        {
+        catch (SQLException sql) {
             sql.printStackTrace();
 
             //Hubo algun error hacer rollback
@@ -1903,11 +1765,11 @@ public class TransactionMySQL
         }//Fin carch
 
     }//Fin metodo MostrarSimUsuario
+
     //--------------------------------------------------------------------------
     //Metodo que despliega la informacion de todo el contenido de una Simulacion
     //Primero verificadno que la simulacion sea del usuario correspondiente
-    public void MostrarDetallesSim(int idsim, int idusr) throws SQLException
-    {
+    public void MostrarDetallesSim(int idsim, int idusr) throws SQLException {
         String[][] ressim;
         String[][] circuitos;
 
@@ -1919,32 +1781,28 @@ public class TransactionMySQL
         //la tabla USUARIo p/e:tupla o columna
         conn.setTransactionIsolation(4);
 
-        try
-        {
+        try {
 
-            ressim = ResultQuery("select Id from SIMULACION where Id = "+idusr+" and NumSim = "+idsim+";");
+            ressim = ResultQuery("select Id from SIMULACION where Id = " + idusr + " and NumSim = " + idsim + ";");
 
             //Si se obtuvo una simulacion valida par el usuario
-            if(ressim[0][0] != null)
-            {
+            if (ressim[0][0] != null) {
                 //Hacer el despliegue de la info
                 System.out.println("$Total\tSalida\t\tLlegada\t   Personas\tPais\n");
-                query("select Costo,FechaSalida,FechaLlegada,NumPersonas,Pais from SIMULACION where NumSim = "+idsim+";");
+                query("select Costo,FechaSalida,FechaLlegada,NumPersonas,Pais from SIMULACION where NumSim = " + idsim + ";");
 
-                circuitos = ResultQuery("select Identificador from SIMULACIONCIRCUITO where NumSim = "+idsim+" order by FechaSal asc;");
+                circuitos = ResultQuery("select Identificador from SIMULACIONCIRCUITO where NumSim = " + idsim + " order by FechaSal asc;");
 
                 //Para cada cirucito mostrar su info asegurandose que haya circuitos en la simulacion
                 System.out.println("\nCircuitos en la simulacion: \n");
                 System.out.println("-----------------------------------------------");
 
-                for(int i = 0; i < circuitos.length; i++)
-                {
-                    if(circuitos[i][0] != null)
-                    {
-                        System.out.println("Circuito:"+circuitos[i][0]+"\n");
+                for (int i = 0; i < circuitos.length; i++) {
+                    if (circuitos[i][0] != null) {
+                        System.out.println("Circuito:" + circuitos[i][0] + "\n");
                         System.out.println("C.Salida\tC.Lleagada\tDias\tPrecio(P/persona)");
                         query("select CiudadSalida,CiudadLlegada,Duracion,Precio from CIRCUITO "
-                                + "where Identificador = '"+circuitos[i][0]+"';");
+                                + "where Identificador = '" + circuitos[i][0] + "';");
 
                         System.out.println();
 
@@ -1953,7 +1811,7 @@ public class TransactionMySQL
                         //Mostrar todas las etapas del cirucito
                         query("select NombreLugar,E.Ciudad,Duracion,Precio "
                                 + "from ETAPA E, LUGARAVISITAR L "
-                                + "where Identificador = '"+circuitos[i][0]+"' and E.NombreLugar = L.Nombre "
+                                + "where Identificador = '" + circuitos[i][0] + "' and E.NombreLugar = L.Nombre "
                                 + "and E.Ciudad = L.Ciudad and E.Pais = L.Pais "
                                 + "order by Orden;");
 
@@ -1967,36 +1825,34 @@ public class TransactionMySQL
                 System.out.println("Hotel\t\tCiudad\t#Cuarto\tInicio\t\tFinal\t\t$Cuarto\t$Desayuno(P/persona)\n");
 
                 qryhot = "select SH.NomHotel, SH.NomCiudad, SH.NumCuarto, FechaInicio, FechaFinal, PrecioCuarto, PrecioDesayuno "
-                        +"from SIMULACIONHOTEL SH, HOTEL H "
-                        +"where SH.NumSim = "+idsim+" and SH.NomHotel = H.Nombre and SH.NomCiudad = H.Ciudad and "
-                        +"SH.Pais = H.Pais "
-                        +"order by FechaInicio asc, FechaFinal asc; ";
+                        + "from SIMULACIONHOTEL SH, HOTEL H "
+                        + "where SH.NumSim = " + idsim + " and SH.NomHotel = H.Nombre and SH.NomCiudad = H.Ciudad and "
+                        + "SH.Pais = H.Pais "
+                        + "order by FechaInicio asc, FechaFinal asc; ";
 
                 query(qryhot);
 
                 System.out.println();
             }//FIn if 1
-            else
-            {
+            else {
                 System.out.println("Simulacion no valida. Consulte sus simulaciones realizadas!\n");
             }//Fin else 1
 
         }//Fin try
-        catch(SQLException sql)
-        {
+        catch (SQLException sql) {
             sql.printStackTrace();
             //HUBO ERROR HACER ROLLBACK
             conn.rollback(); //Fin e inicio transaccion
         }//Fin catch
 
     }//Fin metodo MostrarDetalleSim
+
     //--------------------------------------------------------------------------
     //Metodo que despliega la informacion de todo el contenido de una RESERVACION
     //Primero verificadno que la RESERVACION sea del usuario correspondiente
     //METODO copia de MostrarDetallesSim que adicionamlmente hace verificacion
     //del decuento de trabajador desucento del 15%
-    public void MostrarDetallesRes(int idres, int idusr) throws SQLException
-    {
+    public void MostrarDetallesRes(int idres, int idusr) throws SQLException {
         String[][] ressim;
         String[][] circuitos;
 
@@ -2011,32 +1867,28 @@ public class TransactionMySQL
         //la tabla USUARIo p/e:tupla o columna
         conn.setTransactionIsolation(4);
 
-        try
-        {
+        try {
 
-            ressim = ResultQuery("select Id from RESERVACION where Id = "+idusr+" and NumRes = "+idres+";");
+            ressim = ResultQuery("select Id from RESERVACION where Id = " + idusr + " and NumRes = " + idres + ";");
 
             //Si se obtuvo una simulacion valida par el usuario
-            if(ressim[0][0] != null)
-            {
+            if (ressim[0][0] != null) {
                 //Hacer el despliegue de la info
                 System.out.println("$Total\tSalida\t\tLlegada\t   Personas\tPais\n");
-                query("select Costo,FechaSalida,FechaLlegada,NumPersonas,Pais from RESERVACION where NumRes = "+idres+";");
+                query("select Costo,FechaSalida,FechaLlegada,NumPersonas,Pais from RESERVACION where NumRes = " + idres + ";");
 
-                circuitos = ResultQuery("select Identificador from RESERVACIONCIRCUITO where NumRes= "+idres+" order by FechaSal asc;");
+                circuitos = ResultQuery("select Identificador from RESERVACIONCIRCUITO where NumRes= " + idres + " order by FechaSal asc;");
 
                 //Para cada cirucito mostrar su info asegurandose que haya circuitos en la simulacion
                 System.out.println("\nCircuitos en la reservacion: \n");
                 System.out.println("-----------------------------------------------");
 
-                for(int i = 0; i < circuitos.length; i++)
-                {
-                    if(circuitos[i][0] != null)
-                    {
-                        System.out.println("Circuito:"+circuitos[i][0]+"\n");
+                for (int i = 0; i < circuitos.length; i++) {
+                    if (circuitos[i][0] != null) {
+                        System.out.println("Circuito:" + circuitos[i][0] + "\n");
                         System.out.println("C.Salida\tC.Lleagada\tDias\tPrecio(P/persona)");
                         query("select CiudadSalida,CiudadLlegada,Duracion,Precio from CIRCUITO "
-                                + "where Identificador = '"+circuitos[i][0]+"';");
+                                + "where Identificador = '" + circuitos[i][0] + "';");
 
                         System.out.println();
 
@@ -2045,7 +1897,7 @@ public class TransactionMySQL
                         //Mostrar todas las etapas del cirucito
                         query("select NombreLugar,E.Ciudad,Duracion,Precio "
                                 + "from ETAPA E, LUGARAVISITAR L "
-                                + "where Identificador = '"+circuitos[i][0]+"' and E.NombreLugar = L.Nombre "
+                                + "where Identificador = '" + circuitos[i][0] + "' and E.NombreLugar = L.Nombre "
                                 + "and E.Ciudad = L.Ciudad and E.Pais = L.Pais "
                                 + "order by Orden;");
 
@@ -2059,10 +1911,10 @@ public class TransactionMySQL
                 System.out.println("Hotel\t\tCiudad\t#Cuarto\tInicio\t\tFinal\t\t$Cuarto\t$Desayuno(P/persona)\n");
 
                 qryhot = "select RH.NomHotel, RH.NomCiudad, RH.NumCuarto, FechaInicio, FechaFinal, PrecioCuarto, PrecioDesayuno "
-                        +"from RESERVACIONHOTEL RH, HOTEL H "
-                        +"where RH.NumRes = "+idres+" and RH.NomHotel = H.Nombre and RH.NomCiudad = H.Ciudad and "
-                        +"RH.Pais = H.Pais "
-                        +"order by FechaInicio asc, FechaFinal asc; ";
+                        + "from RESERVACIONHOTEL RH, HOTEL H "
+                        + "where RH.NumRes = " + idres + " and RH.NomHotel = H.Nombre and RH.NomCiudad = H.Ciudad and "
+                        + "RH.Pais = H.Pais "
+                        + "order by FechaInicio asc, FechaFinal asc; ";
 
                 query(qryhot);
 
@@ -2070,16 +1922,14 @@ public class TransactionMySQL
 
                 //Verificar si el usuario es cliente y después ver si es empleado
                 //para mostrar descuento
-                cliente = ResultQuery("select Id,Empleado from CLIENTE where Id = "+idusr+";");
-                if(cliente[0][0] != null)
-                {
-                    if( cliente[0][1].equals("Si") )
-                    {
+                cliente = ResultQuery("select Id,Empleado from CLIENTE where Id = " + idusr + ";");
+                if (cliente[0][0] != null) {
+                    if (cliente[0][1].equals("Si")) {
                         System.out.println("Empleado de AgenciaPonchito encontrado!");
                         System.out.print("Descuento preferncial para trabajador: $");
 
-                        query("select Costo-(Costo*.15) from RESERVACION where Id = "+idusr+" and "
-                                + "NumRes = "+idres+";");
+                        query("select Costo-(Costo*.15) from RESERVACION where Id = " + idusr + " and "
+                                + "NumRes = " + idres + ";");
 
                         System.out.println();
 
@@ -2088,14 +1938,12 @@ public class TransactionMySQL
                 }//Fin if 2
 
             }//FIn if 1
-            else
-            {
+            else {
                 System.out.println("Reservacion no valida. Consulte sus reservaciones realizadas!\n");
             }//Fin else 1
 
         }//Fin try
-        catch(SQLException sql)
-        {
+        catch (SQLException sql) {
             sql.printStackTrace();
             //HUBO ERROR HACER ROLLBACK
             conn.rollback(); //Fin e inicio transaccion
@@ -2106,8 +1954,7 @@ public class TransactionMySQL
     //--------------------------------------------------------------------------
     //Metodo que obtiene los datos actuales del cliente de los siguientes atributos
     //en este orden:Tipo,Direccion/FormaPago/Esempleado
-    public String[][] qryGetClientData(int iduser) throws SQLException
-    {
+    public String[][] qryGetClientData(int iduser) throws SQLException {
         String[][] result;
 
         //Hacer lecturas sobre informacion a la que ya se le ha hecho
@@ -2116,16 +1963,14 @@ public class TransactionMySQL
         //la tabla USUARIo
         conn.setTransactionIsolation(4);
 
-        try
-        {
+        try {
 
-            result = ResultQuery("select Tipo,Dirc,Pago,Empleado from CLIENTE where Id = "+iduser+";");
+            result = ResultQuery("select Tipo,Dirc,Pago,Empleado from CLIENTE where Id = " + iduser + ";");
             //No hubo error hacer commit
             conn.commit(); //Fin e inicio de transaccion
 
         }//Fin try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             sqle.printStackTrace();
             //Hubo error hacer rollback
             conn.rollback(); //Fin e inicio de transaccion
@@ -2137,58 +1982,54 @@ public class TransactionMySQL
         return result;
 
     }//Fin metodo qryGetClientData
+
     //--------------------------------------------------------------------------
     //Metodo que hace actualizacion de los atributos Tipo,Dic/FormaPago/Empleado
     //para un CLIENTE;
-    public void UpdateDatosCliente(int idusr, String tipo, String dir, String pago, String emple)throws SQLException
-    {
+    public void UpdateDatosCliente(int idusr, String tipo, String dir, String pago, String emple) throws SQLException {
         //Como se va a hacer update pero de tuplas que ya hay para esta transaccion
         //es idoneo el nivel de aisalmiento 4 que solo permite lecturas fanrasmas
         //pero como aqui no va a haber isnerciones parece que no habria conflcito
         //entre actualizaciones
         conn.setTransactionIsolation(4);
 
-        try
-        {
+        try {
             stmt.executeUpdate("update CLIENTE "
-                    + "set Tipo = '"+tipo+"', Dirc = '"+dir+"', Pago = '"+pago+"', Empleado = '"+emple+"' "
-                    + "where Id = "+idusr+";");
+                    + "set Tipo = '" + tipo + "', Dirc = '" + dir + "', Pago = '" + pago + "', Empleado = '" + emple + "' "
+                    + "where Id = " + idusr + ";");
 
             //No hubo error hacer commit
             conn.commit(); //Fin e inicio de transaccion
 
         }//FIn try
-        catch(SQLException sqle)
-        {
+        catch (SQLException sqle) {
             sqle.printStackTrace();
             //Hubo error hacer rollback
             conn.rollback(); //Fin e inicio de transaccion
         }//FIn catch
 
     }//Fin metodo UpdateDatosCLiente
+
     //--------------------------------------------------------------------------
     //Query que despliega toda la informacion de un cliente conocido de tabla CLIENTE
     //y que tambien despliega el nombre contenido en tabla USUARIO
-    public void MostrarDatosCliente(int id) throws SQLException
-    {
+    public void MostrarDatosCliente(int id) throws SQLException {
         //Hacer lecturas sobre informacion a la que ya se le ha hecho
         //commit y sobre la cual no se pueden hacer modificaciones(sin embargo)
         //Si puede causar lecturas fantasmas si algun atributo es añadido en
         //la tabla USUARIo
         conn.setTransactionIsolation(4);
 
-        try
-        {
+        try {
             query("select Nombre, Tipo,AnioRegistro,Dirc,Pago,Empleado "
                     + "from USUARIO, CLIENTE "
-                    + "where USUARIO.Id = CLIENTE.Id and USUARIO.Id = "+id+";");
+                    + "where USUARIO.Id = CLIENTE.Id and USUARIO.Id = " + id + ";");
 
             //No hubo error, hacer commit
             conn.commit(); //Fin e inicio de nueva transaccion
 
         }//Fin try
-        catch(SQLException sql)
-        {
+        catch (SQLException sql) {
             sql.printStackTrace();
 
             //Hubo algun error hacer rollback
@@ -2197,12 +2038,12 @@ public class TransactionMySQL
         }//Fin carch
 
     }//Fin metodo MostrarDatosCliente
+
     //--------------------------------------------------------------------------
     //A partir de un usuario crear Cliente conocido con info requerida
-    public void InsertarCliente(int id, String tipo, Date fecha ,String dir, String pago, String emp) throws SQLException
-    {
+    public void InsertarCliente(int id, String tipo, Date fecha, String dir, String pago, String emp) throws SQLException {
         //Obtener solo el año de la fecha que recibe como argumento
-        Calendar cal  = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         //Pasar datos fecha de tipo Date a objeto de clase Clanedar
         cal.setTime(fecha);
         int year = cal.get(Calendar.YEAR);
@@ -2213,17 +2054,15 @@ public class TransactionMySQL
         //la tabla USUARIo
         conn.setTransactionIsolation(4);
 
-        try
-        {
+        try {
             stmt.executeUpdate("insert into CLIENTE(Id,Tipo,AnioRegistro,Dirc,Pago,Empleado) values ("
-                    + ""+id+",'"+tipo+"',"+year+",'"+dir+"','"+pago+"','"+emp+"') ; ");
+                    + "" + id + ",'" + tipo + "'," + year + ",'" + dir + "','" + pago + "','" + emp + "') ; ");
 
             //No hubo error hacer commit
             conn.commit();
 
         }//Fin try
-        catch(SQLException sql)
-        {
+        catch (SQLException sql) {
             sql.printStackTrace();
 
             //Hubo algun error hacer rollback
@@ -2231,20 +2070,16 @@ public class TransactionMySQL
         }//Finc catch
 
     }//Fin metodo InsertarCliente
+
     //--------------------------------------------------------------------------
     //Metodo que imprime todos los elementos de un arreglo de string a excepcion
     //de aquellos que tienen ""; EL metodo recibe el arreglo y posicion limite hasta
     //donde quiere que se revice el contenido la posicion limite no es incluida
-    public void Mostrararray(String[] array, int limite)
-    {
-        for(int i = 0; i < limite; i++)
-        {
-            if(array[i].equals(""))
-            {
+    public void Mostrararray(String[] array, int limite) {
+        for (int i = 0; i < limite; i++) {
+            if (array[i].equals("")) {
                 //No imprimir nada
-            }
-            else
-            {
+            } else {
                 System.out.println(array[i]);
             }//Fin else
 
@@ -2254,17 +2089,15 @@ public class TransactionMySQL
         System.out.println();
 
     }//Fin metodo Mostrararray
+
     //--------------------------------------------------------------------------
     //Metodo que dado una string hace reccorrido en el arreglo en busca del
     //valor especificado y si lo encuentra lo sustituye con un ""; EL metodo recibe el arreglo y posicion limite hasta
     //donde quiere que se revice el contenido la posicion limite no es incluida
     // Esta implementacion sustituye a todos los elementos con ese valor
-    String[] Eliminararray(String[] array, int limite, String elemento)
-    {
-        for(int i = 0; i < limite; i++)
-        {
-            if(array[i].equals(elemento))
-            {
+    String[] Eliminararray(String[] array, int limite, String elemento) {
+        for (int i = 0; i < limite; i++) {
+            if (array[i].equals(elemento)) {
                 //baja del elelmetno
                 array[i] = "";
             }//Fin if 1
@@ -2274,20 +2107,18 @@ public class TransactionMySQL
         return array;
 
     }//Fin metodo Elimianrarray
+
     //--------------------------------------------------------------------------
     //Metodo que dado un arreglo de strings solo agrega aquellos elementos que
     //no esten duplicados en el arreglo, si ya esta dentro del arreglo no lo
     //agrega. Parametros: Arreglo strings, numero de elementos, String a insertar
     //Finalmente el metodo regresa el arreglo tras las modificaciones si es que hubo
-    String[] Insertararray(String[] array, int lim, String elem)
-    {
+    String[] Insertararray(String[] array, int lim, String elem) {
         int duplicado = -1; //-1=no duplicados 1= si hay un duplicado
 
         //Verificar si el dato ya esta en el arreglo
-        for(int i = 0; i < lim; i++)
-        {
-            if(array[i].equals(elem))
-            {
+        for (int i = 0; i < lim; i++) {
+            if (array[i].equals(elem)) {
                 //Elemento duplicado
                 duplicado = 1;
 
@@ -2298,37 +2129,33 @@ public class TransactionMySQL
         }//Fin for 1
 
         //No hubo duplicado hacer insercion en la ultima posicion
-        if(duplicado == -1)
-        {
+        if (duplicado == -1) {
             array[lim] = elem;
         }//Fin if 1
 
         return array;
 
     }//Fin metodo Insertararray
+
     //--------------------------------------------------------------------------
     //Metodo que dado una matriz de strings solo agrega aquellos elementos que
     //no esten duplicados en la matriz, si ya esta dentro de esta no lo agrega
     //Parametrosos: matriz string, limite de rows(Numero de elementos en la matriz),
     //String elemento[] (arreglo de atributos de tupla que se desea insertar)
-    public String[][] Insertarmatriz(String[][] mat,int rowl, String tupla[])
-    {
+    public String[][] Insertarmatriz(String[][] mat, int rowl, String tupla[]) {
         //Contador de numero de atributos donde hubo match con los valores
         //que desean ser eliminados
         int countdel = 0;
 
         //Para cada fila/tupla de la matriz
-        for(int i = 0; i < rowl; i++ )
-        {
+        for (int i = 0; i < rowl; i++) {
             //Checar cada atributo de la tupla
-            for(int j = 0; j < tupla.length; j++)
-            {
+            for (int j = 0; j < tupla.length; j++) {
                 //--------------------------------------------
-                System.out.println(mat[i][j]+"=="+tupla[j]);
+                System.out.println(mat[i][j] + "==" + tupla[j]);
                 //--------------------------------------------
 
-                if(mat[i][j].equals( tupla[j] ) )
-                {
+                if (mat[i][j].equals(tupla[j])) {
                     //Aumentar el contador de coincidencias
                     countdel++;
                 }//FIn if 1
@@ -2339,23 +2166,20 @@ public class TransactionMySQL
             //pasar a siguiente tupla
             //----------------
             System.out.println("Num coincidencias");
-            System.out.println(countdel +"=="+ tupla.length+"?");
+            System.out.println(countdel + "==" + tupla.length + "?");
             //----------------
-            if(countdel != tupla.length)
-            {
+            if (countdel != tupla.length) {
                 //Solo agregar en matriz si ya se recorreiron todas las tuplas:
                 //En otras palabras, se llego a la ultima tupla dela rreglo con un contador de  coincidencias
                 //menor al de numero de los atributos de la tupla
-                if(i == rowl-1)
-                {
+                if (i == rowl - 1) {
                     //Como la tupla no fue completamente igual que ninguna que ya estaba
                     //en la matriz, se puede agregar en la posicion siguiente (osea la posicion del limite)
                     //cada uno de los atributos de la tupla
-                    for(int k = 0;  k  < tupla.length; k++ )
-                    {
+                    for (int k = 0; k < tupla.length; k++) {
                         //----------------
                         System.out.print("Agregar en ultima posicion");
-                        System.out.println("["+rowl+"] ["+k+"]");
+                        System.out.println("[" + rowl + "] [" + k + "]");
                         //----------------
                         mat[rowl][k] = tupla[k];
                     }//Fin for 3
@@ -2363,8 +2187,7 @@ public class TransactionMySQL
                 }//Fin if 3
 
             }//Fin if 2
-            else
-            {
+            else {
                 //IMPORTANTE:
                 //Como la tupla a isnertar ya fue completamente igual para una tupla
                 //de la matriz; entonces acabar proceso  ya que definitivamente
@@ -2382,10 +2205,8 @@ public class TransactionMySQL
 
         //Caso especial: cuando el rowl viene en 0 porque es la primera insercion
         //no hay duplicados entonces isnertar la tupla
-        if(rowl == 0)
-        {
-            for(int k = 0;  k  < tupla.length; k++ )
-            {
+        if (rowl == 0) {
+            for (int k = 0; k < tupla.length; k++) {
                 mat[rowl][k] = tupla[k];
             }//Fin for 4
 
@@ -2393,45 +2214,39 @@ public class TransactionMySQL
 
         return mat;
     }//Fin metodo Insertarmatriz
+
     //--------------------------------------------------------------------------
     //Metodo que dado una matriz de strings muestra el contenido, recibe la matriz
     //numero de tuplas/filas limite sobre las que se hara el recorrido y numero
     //de atributos que se deben imprimir sobre la misma linea
-    public void Mostrarmatriz(String[][] mat, int rowslim, int atributos)
-    {
+    public void Mostrarmatriz(String[][] mat, int rowslim, int atributos) {
         //------------------------
         //System.out.println("Limite de tuplas"+rowslim);
         //System.out.println("Num tuplas en matriz"+mat.length);
         //------------------------
 
         //Recorrido sobre filas
-        for(int i = 0; i < rowslim; i++)
-        {
+        for (int i = 0; i < rowslim; i++) {
             //Si el primer atributo de la fila no es igual a "" o tampoco es null, entonces imprimir
             //el contenido de todos sus atributos
 
-            if(mat[i][0] == null)
-            {
+            if (mat[i][0] == null) {
                 //No hacer nada en estafila porque la tupla es nulo
                 //System.out.println("NULO");
             }//fiN IF 0
-            else
-            {
-                if(  !mat[i][0].equals("") )
-                {
+            else {
+                if (!mat[i][0].equals("")) {
                     //Recorrido sobre Atributos
-                    for(int j = 0; j < atributos; j++)
-                    {
+                    for (int j = 0; j < atributos; j++) {
 
-                        System.out.print(mat[i][j]+"\t");
+                        System.out.print(mat[i][j] + "\t");
                     }//Fin for 2
 
                     //Imprimir nueva linea que delimita comienzo de nuva fila/tupla
                     System.out.println();
 
                 }//Fin if 1
-                else
-                {
+                else {
                     //El prier atributo esta vacio entonces checar la siguiente fila
                 }//Fin else 1
 
@@ -2440,29 +2255,26 @@ public class TransactionMySQL
         }//Fin for 1
 
     }//Fin metodo mostrarmatriz
+
     //--------------------------------------------------------------------------
     //Metodo que elimina aquellas tuplas de la matriz que tengan los mismos valores
     //que se le pasan en un arreglo para todos los atributos y regresa la matriz
     //con los elementos eliminados como "", recibe la matriz, el numero de filas/tuplas
     //hasta donde debe verificar y los atributos que debe tener de forma exacta
-    String[][] Eliminarmatriz(String[][] mat, int rowlimite, String valores[])
-    {
+    String[][] Eliminarmatriz(String[][] mat, int rowlimite, String valores[]) {
         //Contador de numero de atributos donde hubo match con los valores
         //que desean ser eliminados
         int countdel = 0;
 
         //Para cada fila/tupla de la matriz
-        for(int i = 0; i < rowlimite; i++ )
-        {
+        for (int i = 0; i < rowlimite; i++) {
             //Checar cada atributo de la tupla
-            for(int j = 0; j < valores.length; j++)
-            {
+            for (int j = 0; j < valores.length; j++) {
                 //--------------------------------------------
                 //System.out.println(mat[i][j]+"=="+valores[j]);
                 //--------------------------------------------
 
-                if(mat[i][j].equals( valores[j] ) )
-                {
+                if (mat[i][j].equals(valores[j])) {
                     //Aumentar el contador de coincidencias
                     countdel++;
                 }//FIn if 1
@@ -2475,11 +2287,9 @@ public class TransactionMySQL
             //System.out.println("Num coincidencias");
             //System.out.println(countdel +"=="+ valores.length+"?");
             //----------------
-            if(countdel == valores.length)
-            {
+            if (countdel == valores.length) {
                 //Hacer el borrado de cada atributo/columna
-                for(int k = 0;  k  < valores.length; k++ )
-                {
+                for (int k = 0; k < valores.length; k++) {
                     //----------------
                     //System.out.print("Borrar");
                     //System.out.println("["+i+"] ["+k+"]");
@@ -2495,6 +2305,7 @@ public class TransactionMySQL
 
         return mat;
     }//Fin metodo eliminar matriz
+
     //--------------------------------------------------------------------------
     //Metodo que por forma recursiva dadas las etapas que le son pasadas
     //pregunta al usuario que seleccione un cuarto de hotel en la fecha correspodniente
@@ -2504,7 +2315,7 @@ public class TransactionMySQL
     //2)Para el numero de personas que se considera para la simulacion se debe encontrar
     //un cuarto que pueda almacenar a todas las personas ya que para una simulacion
     //no se pueden asignar 2 o más cuartos en una misma fecha
-    public int simHotel(String fecha, String[][] etapaFecha, int count, int index) throws SQLException ,IOException {
+    public int simHotel(String fecha, String[][] etapaFecha, int count, int index) throws SQLException, IOException {
 
         if (count == etapaFecha.length) return count;
         numberHoteles++;
@@ -2531,12 +2342,12 @@ public class TransactionMySQL
         System.out.println("Los hoteles disponibles en, " + etapaFecha[count][4] + " son:\n");
         System.out.println("Nombre\t\t$Cuarto\t$Desayuno(P/persona)");
 
-        Mostrarmatriz(res,res.length,3);
+        Mostrarmatriz(res, res.length, 3);
         System.out.print("\nSeleccione uno de los hoteles anteriores: ");
         hotel = sc.nextLine();
 
         String[][] costos = ResultQuery("SELECT PrecioCuarto, PrecioDesayuno FROM hotel WHERE nombre = '" + hotel + "' AND ciudad = '"
-                + etapaFecha[count][4] + "'" );
+                + etapaFecha[count][4] + "'");
 
 
         //Creación fecha final
@@ -2549,47 +2360,44 @@ public class TransactionMySQL
         int fechaFinalM;
         int fechaFinalD;
 
-        fechaInicialY = Integer.parseInt(fecha.substring(0,4));
-        fechaInicialM = Integer.parseInt(fecha.substring(5,7));
-        fechaInicialD = Integer.parseInt(fecha.substring(8,10));
+        fechaInicialY = Integer.parseInt(fecha.substring(0, 4));
+        fechaInicialM = Integer.parseInt(fecha.substring(5, 7));
+        fechaInicialD = Integer.parseInt(fecha.substring(8, 10));
 
         if (fechaInicialM == 1 || fechaInicialM == 3 || fechaInicialM == 5 || fechaInicialM == 7 || fechaInicialM == 8 ||
-                fechaInicialM == 10 || fechaInicialM == 12 ){
-            if (fechaInicialD + Integer.parseInt(etapaFecha[count][6]) > 31 && fechaInicialM == 12){
+                fechaInicialM == 10 || fechaInicialM == 12) {
+            if (fechaInicialD + Integer.parseInt(etapaFecha[count][6]) > 31 && fechaInicialM == 12) {
                 fechaFinalY = fechaInicialY + 1;
                 fechaFinalM = 1;
-                fechaFinalD = fechaInicialD + Integer.parseInt(etapaFecha[count][6]) -32;
+                fechaFinalD = fechaInicialD + Integer.parseInt(etapaFecha[count][6]) - 32;
             }
-            if (fechaInicialD + Integer.parseInt(etapaFecha[count][6]) > 31 && fechaInicialM != 12){
+            if (fechaInicialD + Integer.parseInt(etapaFecha[count][6]) > 31 && fechaInicialM != 12) {
                 fechaFinalY = fechaInicialY;
-                fechaFinalM = fechaInicialM +1 ;
-                fechaFinalD = fechaInicialD + Integer.parseInt(etapaFecha[count][6]) -32;
+                fechaFinalM = fechaInicialM + 1;
+                fechaFinalD = fechaInicialD + Integer.parseInt(etapaFecha[count][6]) - 32;
             }
-            if (fechaInicialD + Integer.parseInt(etapaFecha[count][6]) <= 31){
+            if (fechaInicialD + Integer.parseInt(etapaFecha[count][6]) <= 31) {
                 fechaFinalY = fechaInicialY;
                 fechaFinalM = fechaInicialM;
                 fechaFinalD = fechaInicialD + Integer.parseInt(etapaFecha[count][6]);
             }
         }
-        if (fechaInicialM == 2){
-            if (fechaInicialD + Integer.parseInt(etapaFecha[count][6]) > 28){
+        if (fechaInicialM == 2) {
+            if (fechaInicialD + Integer.parseInt(etapaFecha[count][6]) > 28) {
                 fechaFinalY = fechaInicialY;
-                fechaFinalM = fechaInicialM+1;
+                fechaFinalM = fechaInicialM + 1;
                 fechaFinalD = fechaInicialD + Integer.parseInt(etapaFecha[count][6]) - 29;
-            }
-            else{
+            } else {
                 fechaFinalY = fechaInicialY;
                 fechaFinalM = fechaInicialM;
                 fechaFinalD = fechaInicialD + Integer.parseInt(etapaFecha[count][6]);
             }
-        }
-        else{
-            if (fechaInicialD + Integer.parseInt(etapaFecha[count][6]) > 30){
+        } else {
+            if (fechaInicialD + Integer.parseInt(etapaFecha[count][6]) > 30) {
                 fechaFinalY = fechaInicialY;
                 fechaFinalM = fechaInicialM + 1;
                 fechaFinalD = fechaInicialD + Integer.parseInt(etapaFecha[count][6]) - 31;
-            }
-            else{
+            } else {
                 fechaFinalY = fechaInicialY;
                 fechaFinalM = fechaInicialM;
                 fechaFinalD = fechaInicialD + Integer.parseInt(etapaFecha[count][6]);
@@ -2597,52 +2405,52 @@ public class TransactionMySQL
         }
         String strFechaInicial = String.valueOf(fechaInicialY);
         String strFechaFinal = String.valueOf(fechaFinalY);
-        if (fechaInicialM < 10 || fechaInicialD < 10){
-            if (fechaInicialM < 10){
+        if (fechaInicialM < 10 || fechaInicialD < 10) {
+            if (fechaInicialM < 10) {
                 strFechaInicial = strFechaInicial + "-0" + String.valueOf(fechaInicialM) + "-";
-            }else{
+            } else {
                 strFechaInicial = strFechaInicial + "-" + String.valueOf(fechaInicialM) + "-";
             }
-            if (fechaInicialD < 10){
+            if (fechaInicialD < 10) {
                 strFechaInicial = strFechaInicial + "0" + String.valueOf(fechaInicialD);
-            }else{
+            } else {
                 strFechaInicial = strFechaInicial + String.valueOf(fechaInicialD);
             }
-        }else{
+        } else {
             strFechaInicial = strFechaInicial + "-" + String.valueOf(fechaInicialM) + "-" + String.valueOf(fechaInicialD);
         }
 
-        if (fechaFinalM < 10 || fechaFinalD < 10){
-            if (fechaFinalM < 10){
+        if (fechaFinalM < 10 || fechaFinalD < 10) {
+            if (fechaFinalM < 10) {
                 strFechaFinal = strFechaFinal + "-0" + String.valueOf(fechaFinalM) + "-";
-            }else{
+            } else {
                 strFechaFinal = strFechaFinal + "-" + String.valueOf(fechaFinalM) + "-";
             }
-            if (fechaFinalD < 10){
+            if (fechaFinalD < 10) {
                 strFechaFinal = strFechaFinal + "0" + String.valueOf(fechaFinalD);
-            }else{
+            } else {
                 strFechaFinal = strFechaFinal + String.valueOf(fechaFinalD);
             }
-        }else{
+        } else {
             strFechaFinal = strFechaFinal + "-" + String.valueOf(fechaFinalM) + "-" + String.valueOf(fechaFinalD);
         }
 
         //Fin fecha final
 
         String queryCuartos = "SELECT Nombre, NumCuarto, Capacidad FROM cuarto WHERE Nombre LIKE '" + hotel + "'" +
-                "AND Ciudad = '" + etapaFecha[count][4] + "'" ;
+                "AND Ciudad = '" + etapaFecha[count][4] + "'";
         String[][] resCuartos = null;
 
         try {
             resCuartos = ResultQuery(queryCuartos);
             conn.commit();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             conn.rollback();
         }
 
         System.out.println("\nEscoga un numero de cuarto de acuerdo al número de ocupantes");
         System.out.println("Nombre\t\tNumero\tCapacidad");
-        Mostrarmatriz(resCuartos,resCuartos.length,3);
+        Mostrarmatriz(resCuartos, resCuartos.length, 3);
         int i = 0;
         int cuarto;
         System.out.print("Numero de cuarto: ");
@@ -2671,7 +2479,7 @@ public class TransactionMySQL
         }
         conn.commit();*/
 
-        return simHotel(strFechaFinal,etapaFecha,count + 1, index+1);
+        return simHotel(strFechaFinal, etapaFecha, count + 1, index + 1);
         //queryCuar = "SELECT "
 
     }
