@@ -1473,6 +1473,8 @@ public class TransactionMySQL {
                                                             break;
 
                                                         case 6:
+                                                            //SABER SI HUBO ERROR CON FECH O ID DEL CIRCUITO
+                                                            int error = 1; //0 NO HAY ERROR 1 SI HAY ERROR
                                                             //Antes de avanzar a hoteles y cuartos, ver si en tabla
                                                             //RESERVACIONCIRCUITO hay todavia cupo para ese circuito
                                                             //en esa fecha(esto se hace hasta reservacion)
@@ -1486,15 +1488,27 @@ public class TransactionMySQL {
                                                                 //si el ResultQuery no regresa nada etapas[0][0] entonces no llamara metodo que simula
                                                                 //un hotel por lugar
                                                                 if (etapas[r][0] != null) {
+                                                                    //RECURSION
                                                                     index = simHotel(etapas[r][1], etapas, 0, index);
+                                                                    //Como si se encontro algo en el query no hay error
+                                                                    error = 0;
                                                                 }
                                                             }//Fin for
 
-                                                            //En casso de que etapas[0][0] = null se haria una simulacion pero no se tendrian hoteles seleccionados
-                                                            //por lo que para el id de simulacion correspodneinte no habria ninguna tupla en tabla SIMULACIONHOTEL
-                                                            Mostrarmatriz(hotelesMtrx, hotelesMtrx.length, 6);
-                                                            //Indicar que simulacion ha acabado correctamente
-                                                            correctsim = 0;
+                                                            if (error == 0) {
+                                                                //En casso de que etapas[0][0] = null se haria una simulacion pero no se tendrian hoteles seleccionados
+                                                                //por lo que para el id de simulacion correspodneinte no habria ninguna tupla en tabla SIMULACIONHOTEL
+                                                                Mostrarmatriz(hotelesMtrx, hotelesMtrx.length, 6);
+                                                                //Indicar que simulacion ha acabado correctamente
+                                                                correctsim = 0;
+                                                            }//Fin if 1
+                                                            else {
+                                                                //No continuar con el resto de la simulacion
+                                                                correctsim = 1;
+                                                                System.out.println("\nNo se encontro ningun circuito con el identificador y fecha de salida "
+                                                                        + "especificados\n");
+
+                                                            }//Fin esle
 
                                                             //Salir de tods los do while
                                                             ioe = 0;
@@ -1774,7 +1788,7 @@ public class TransactionMySQL {
                                 "from " +
                                 "(select SC.Identificador Id, SC.FechaSal Fs, FC.nbPersonas Limite , SM.NumPersonas nper " +
                                 "from SIMULACIONCIRCUITO SC, FECHACIRCUITO FC , SIMULACION SM " +
-                                "where SC.Identificador = FC.Identificador and SC.FechaSal = FC.FechaSalida and SC.NumSim = " + idsim + " and SM.Numsim = SC.Numsim) R1, " +
+                                "where SC.Identificador = FC.Identificador and SC.FechaSal = FC.FechaSalida and SC.NumSim = "+idsim+" and SM.Numsim = SC.Numsim) R1, " +
 
                                 "(select SUM(NumPersonas) Actual, RC.Identificador Id ,RC.FechaSal Fs " +
                                 "from RESERVACIONCIRCUITO RC, FECHACIRCUITO FC, RESERVACION R " +
@@ -1782,6 +1796,7 @@ public class TransactionMySQL {
                                 "group by RC.FechaSal, RC.Identificador) R2 " +
 
                                 "where R1.Id = R2.Id and R1.Fs = R2.Fs and R1.Limite < R2.Actual+R1.nper";
+
 
                 rescir = ResultQuery(consulta);
 
@@ -2345,7 +2360,7 @@ public class TransactionMySQL {
 
         }//Fin try
         catch (SQLException sql) {
-            sql.printStackTrace();
+            //sql.printStackTrace();
 
             //Hubo algun error hacer rollback
             conn.rollback(); //Fin e inicio de nueva transaccion
@@ -2434,7 +2449,7 @@ public class TransactionMySQL {
             //Checar cada atributo de la tupla
             for (int j = 0; j < tupla.length; j++) {
                 //--------------------------------------------
-                System.out.println(mat[i][j] + "==" + tupla[j]);
+                //System.out.println(mat[i][j] + "==" + tupla[j]);
                 //--------------------------------------------
 
                 if (mat[i][j].equals(tupla[j])) {
@@ -2447,8 +2462,8 @@ public class TransactionMySQL {
             //Si el numero de coincidencias fue igual al numero de atributos de algun elemento
             //pasar a siguiente tupla
             //----------------
-            System.out.println("Num coincidencias");
-            System.out.println(countdel + "==" + tupla.length + "?");
+            //System.out.println("Num coincidencias");
+            //System.out.println(countdel + "==" + tupla.length + "?");
             //----------------
             if (countdel != tupla.length) {
                 //Solo agregar en matriz si ya se recorreiron todas las tuplas:
@@ -2460,8 +2475,8 @@ public class TransactionMySQL {
                     //cada uno de los atributos de la tupla
                     for (int k = 0; k < tupla.length; k++) {
                         //----------------
-                        System.out.print("Agregar en ultima posicion");
-                        System.out.println("[" + rowl + "] [" + k + "]");
+                        //System.out.print("Agregar en ultima posicion");
+                        //System.out.println("[" + rowl + "] [" + k + "]");
                         //----------------
                         mat[rowl][k] = tupla[k];
                     }//Fin for 3
