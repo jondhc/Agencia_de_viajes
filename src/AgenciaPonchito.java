@@ -549,6 +549,11 @@ public class AgenciaPonchito {
                             String ciudad = in.readLine();
                             transac.queryAllLugares(ciudad);
                             break;
+                        case 3: //Todos los lugares por pais
+                            System.out.println("Pais deseado: ");
+                            String paisL = in.readLine();
+                            transac.queryAllLugaresP(paisL);
+                            break;
                         default:
                             break;
                     }
