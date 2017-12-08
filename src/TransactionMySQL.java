@@ -439,6 +439,23 @@ public class TransactionMySQL {
 
     }//Fin qryAllCiudades
 
+    public void queryAllLugares(String ciudad) throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select nombre from LUGARAVISITAR where Ciudad = '" + ciudad + "';");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+
+    }//Fin queryAllLugares
+
     //--------------------------------------------------------------------------
     //Metodo que imprime en pantalla todas las ciudades disponibles
     public void qryAllDistnCiudades() throws SQLException, IOException {
