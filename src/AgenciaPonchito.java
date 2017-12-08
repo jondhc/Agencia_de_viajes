@@ -461,9 +461,10 @@ public class AgenciaPonchito {
                     transac.close();
                     break;
 
-                case 1:
+                case 1: //Paises
                     System.out.println("1)Todos los paises disponibles");
                     System.out.println("2)Buscar un pais especifico");
+                    System.out.println("0)Regresar al menu principal ");
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
 
@@ -487,22 +488,52 @@ public class AgenciaPonchito {
                     System.out.println();
                     break;
 
-                case 2:
+                case 2: //Ciudades
                     //TOdas la ciudades de todos los paises * *
                     //Todas las ciudades de un pais especifico * Nombre
                     //Buscar una ciudad especifica Pais Nombre
+                    System.out.println("1)Todas las ciudades disponibles");
+                    System.out.println("2)Todas las ciudades de un país");
+                    System.out.println("3)Buscar una ciudad de un país");
+                    System.out.println("0)Regresar al menu principal ");
+                    System.out.print("Opcion: ");
                     break;
 
-                case 3:
+                case 3: //Lugares
+                    System.out.println("1)Todos los lugares disponibles");
+                    System.out.println("2)Todos los lugares por ciudad");
+                    System.out.println("3)Todos los lugares por país");
+                    //System.out.println("4)Lugares en un rango de precios");
+                    System.out.println("0)Regresar al menu principal ");
+                    System.out.print("Opcion: ");
                     break;
 
-                case 4:
+                case 4: //Fechas
+                    System.out.println("1)Todas las fechas disponibles");   //Si tiene NbPersonas en 0 no se muestra porque no hay lugares disponibles.
+                    System.out.println("2)Fechas por lugares disponibles");
+                    System.out.println("0)Regresar al menu principal ");
+                    System.out.print("Opcion: ");
                     break;
 
-                case 5:
+                case 5: //Circuitos Sugeridos
+                    System.out.println("1)Todos los circuitos disponibles");
+                    System.out.println("2)Circuitos por ciudad de salida");
+                    System.out.println("3)Circuitos por ciudad de llegada");
+                    System.out.println("4)Circuitos por país de salida");
+                    System.out.println("5)Circuitos por país de llegada");
+                    System.out.println("6)Circuitos por días de duración");
+                    System.out.println("7)Circuitos en un rango de precios");
+                    System.out.println("0)Regresar al menu principal ");
+                    System.out.print("Opcion: ");
                     break;
 
-                case 6:
+                case 6: //Hoteles
+                    System.out.println("Todos los hoteles disponibles");    //Si tiene NumCuartos en 0 no se muestra porque no hay lugares disponibles.
+                    System.out.println("Buscar un hotel específico");
+                    System.out.println("Buscar hoteles por ciudad");
+                    System.out.println("Buscar hoteles por país");
+                    System.out.println("0)Regresar al menu principal ");
+                    System.out.print("Opcion: ");
                     break;
 
                 default:
