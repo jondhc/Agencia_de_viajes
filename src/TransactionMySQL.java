@@ -723,6 +723,70 @@ public class TransactionMySQL {
 
     }//Fin metodo qryAllLugares
 
+    public void queryAllHoteles() throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select * from HOTEL ;");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+    }//Fin queryAllHoteles
+
+    public void queryAllHotelesN(String nombre) throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select * from HOTEL where Nombre = '"+nombre+"';");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+    }//Fin queryAllHotelesN
+
+    public void queryAllHotelesC(String ciudad) throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select * from HOTEL where Ciudad = '"+ciudad+"';");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+    }//Fin queryAllHotelesC
+
+    public void queryAllHotelesP(String pais) throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select * from HOTEL where Pais = '"+pais+"';");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+    }//Fin queryAllHotelesP
+
     //--------------------------------------------------------------------------
     //Dado un nombreLugar Pais y Ciudad busca en la tabla Etapa las etapas que
     //contengan a ese lugar y regresa todos los Identificadores y fechas de Circuitos

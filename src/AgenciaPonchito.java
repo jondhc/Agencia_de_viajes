@@ -648,13 +648,38 @@ public class AgenciaPonchito {
                     break;
 
                 case 6: //Hoteles
-                    System.out.println("Todos los hoteles disponibles");    //Si tiene NumCuartos en 0 no se muestra porque no hay lugares disponibles.
-                    System.out.println("Buscar un hotel específico");
-                    System.out.println("Buscar hoteles por ciudad");
-                    System.out.println("Buscar hoteles por país");
+                    System.out.println("1)Todos los hoteles disponibles");    //Si tiene NumCuartos en 0 no se muestra porque no hay lugares disponibles.
+                    System.out.println("2)Buscar un hotel específico");
+                    System.out.println("3)Buscar hoteles por ciudad");
+                    System.out.println("4)Buscar hoteles por país");
                     System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
+
+                    switch(iop){
+                        case 0:
+                            break;
+                        case 1: //Todos los hoteles disponibles
+                            transac.queryAllHoteles();
+                            break;
+                        case 2: //Buscar un hotel específico
+                            System.out.println("Escriba el hotel que desea:");
+                            String hotelN = in.readLine();
+                            transac.queryAllHotelesN(hotelN);
+                            break;
+                        case 3: //Buscar hoteles por ciudad
+                            System.out.println("Escriba la ciudad donde busca hospedarse: ");
+                            String ciudadH = in.readLine();
+                            transac.queryAllHotelesC(ciudadH);
+                            break;
+                        case 4: //Buscar hoteles por país
+                            System.out.println("Escriba el país donde busca hospedarse: ");
+                            String paisH = in.readLine();
+                            transac.queryAllHotelesP(paisH);
+                            break;
+                        default:
+                            break;
+                    }
 
                     //Separador de respuesta
                     System.out.println();
