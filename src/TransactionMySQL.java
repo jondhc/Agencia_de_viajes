@@ -459,6 +459,19 @@ public class TransactionMySQL {
     }//Fin qryAllDistnCiudades
 
     //--------------------------------------------------------------------------
+    public void queryAllLugares() throws SQLException, IOException{
+        conn.setTransactionIsolation(1);
+        try{
+            query("select Nombre, Ciudad from LUGARAVISITAR;");
+            conn.commit();
+        }//Fin try
+        catch(SQLException sqle){
+            conn.rollback();
+        }//end catch
+    }//end queryAllLugares
+    //Fin
+
+    //--------------------------------------------------------------------------
     //Metodo que regresa un lugar especifico en forma String[1][2] {Nombre,Ciudad}] { {Nombre,Ciudad} }
     //y si no encuentra el lugar especificado regresa String[1][2] {{null,null}}
     public String[][] queryLugar(String pais) throws SQLException, IOException {

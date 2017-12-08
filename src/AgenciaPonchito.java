@@ -469,7 +469,7 @@ public class AgenciaPonchito {
                     iop = Integer.parseInt(in.readLine());
 
 
-                    switch (iop){
+                    switch (iop) {
                         case 0: //Regresar al menu anterior
                             break;
                         case 1: //Todos los paises disponibles
@@ -503,7 +503,7 @@ public class AgenciaPonchito {
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
                     String pais = "";
-                    switch(iop){
+                    switch (iop) {
                         case 0: //Regresar al menu anterior
                             break;
                         case 1: //Todas las ciudades disponibles
@@ -515,15 +515,14 @@ public class AgenciaPonchito {
                             pais = in.readLine();
                             System.out.println("\nResultado de la consulta: ");
                             transac.qryAllCiudades(pais);
-                        break;
+                            break;
                         case 3: //Buscar una ciudad de un país
                             System.out.println("Nombre de pais deseado: ");
                             pais = in.readLine();
                             String result = transac.queryCiudad(pais);
-                            if (result != ""){
+                            if (result != "") {
                                 System.out.println("Ciudad encontrada");
-                            }
-                            else{
+                            } else {
                                 System.out.println("Ciudad no encontrada o inexistente");
                             }
                             break;
@@ -541,6 +540,13 @@ public class AgenciaPonchito {
                     System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
+                    switch(iop){
+                        case 1:
+                            transac.queryAllLugares();
+                            break;
+                        default:
+                            break;
+                    }
 
                     //Separador de respuesta
                     System.out.println();
