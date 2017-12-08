@@ -473,6 +473,40 @@ public class TransactionMySQL {
 
     }//Fin queryAllLugaresP
 
+    public void queryAllFechas() throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select distinct fechasalida from FECHACIRCUITO;");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+
+    }//Fin queryAllFechas
+
+    public void queryAllFechasL() throws SQLException, IOException {
+        //Nivel de aislamiento que hace lecturas sobre contenido que puede
+        //que todavia no este en disco
+        conn.setTransactionIsolation(1);
+
+        try {
+            query("select fechasalida, nbPersonas from FECHACIRCUITO order by nbPersonas;");
+            //Si no hay error hacer commit
+            conn.commit(); //Fin transaccion e inicio de otra transaccion
+        }//Fin try
+        catch (SQLException sqle) {
+            //Si hay error hacer rollback
+            conn.rollback(); //Fin transaccion e inicio de otra transaccion
+        }//Fin catch
+
+    }//Fin queryAllFechasL
+
     //--------------------------------------------------------------------------
     //Metodo que imprime en pantalla todas las ciudades disponibles
     public void qryAllDistnCiudades() throws SQLException, IOException {

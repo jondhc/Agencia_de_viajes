@@ -541,6 +541,8 @@ public class AgenciaPonchito {
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
                     switch(iop){
+                        case 0:
+                            break;
                         case 1:
                             transac.queryAllLugares();
                             break;
@@ -568,6 +570,20 @@ public class AgenciaPonchito {
                     System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
+                    switch(iop){
+                        case 0:
+                            break;
+                        case 1:
+                            System.out.println("Fechas: ");
+                            transac.queryAllFechas();
+                            break;
+                        case 2:
+                            System.out.println("Fechas por lugares disponibles");
+                            transac.queryAllFechasL();
+                            break;
+                        default:
+                            break;
+                    }
 
                     //Separador de respuesta
                     System.out.println();
