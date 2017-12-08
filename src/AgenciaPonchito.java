@@ -25,7 +25,7 @@ public class AgenciaPonchito {
 
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    //Constructor que solo inizalzia el BufferedReader
+    //Constructor que solo inicializa el BufferedReader
     public AgenciaPonchito() {
         //Inicializar lector de buffer para leer los datos de un stream de entrada
         in = new BufferedReader(new InputStreamReader(System.in));
@@ -36,14 +36,14 @@ public class AgenciaPonchito {
     //--------------------------------------------------------------------------
     //Metodo que imprime el menu de login
     int MenuLogin() throws Exception {
-        int io = -1;
+        int io = -1;    //input para menú de login
 
         System.out.println("\t\tAGENCIA DE VIAJES PONCHITO\n");
 
         System.out.println("1)Ingresar (solo usuarios autorizados)");
         System.out.println("2)Registrarse");
         System.out.println("0)Salir");
-        System.out.print("Opcion:");
+        System.out.print("\nOpcion:");
 
         io = Integer.parseInt(in.readLine());
 
@@ -66,12 +66,12 @@ public class AgenciaPonchito {
 
             System.out.println("1)Reservar simulacion ");
             System.out.println("2)Consultar simulaciones ");
-            System.out.println("3)Cosnultar reservaciones ");
+            System.out.println("3)Consultar reservaciones ");
             System.out.println("0)Salir");
             System.out.print("Opcion: ");
 
             //Obtener informacion en forma de cadena y luego convertirla como entero
-            //y guardarla en variable selceted
+            //y guardarla en variable selected
             selected = Integer.parseInt(in.readLine());
 
             //Espacio despues de opcion seleccionada
@@ -445,7 +445,7 @@ public class AgenciaPonchito {
             System.out.println("5)Circuitos sugeridos");
             System.out.println("6)Hoteles");
             System.out.println("0)Regresar al menu principal ");
-            System.out.print("Opcion: ");
+            System.out.print("\nOpcion: ");
 
             //Obtener informacion en forma de cadena y luego convertirla como entero
             //y guardarla en variable selceted
