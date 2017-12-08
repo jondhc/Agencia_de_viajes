@@ -346,7 +346,7 @@ public class TransactionMySQL {
             else {
                 //Regresa rnombre pais encontrado
                 paisres = paisdes[0][0];
-                System.out.println("Pais "+paisres+" encontrado");
+                System.out.println("Pais " + paisres + " encontrado");
             }//Fin else
 
         }//Fin try
@@ -530,7 +530,7 @@ public class TransactionMySQL {
         conn.setTransactionIsolation(1);
 
         try {
-            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where CiudadSalida = '"+ciudad+ "' ;");
+            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where CiudadSalida = '" + ciudad + "' ;");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
         }//Fin try
@@ -547,7 +547,7 @@ public class TransactionMySQL {
         conn.setTransactionIsolation(1);
 
         try {
-            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where CiudadLlegada = '"+ciudad+ "' ;");
+            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where CiudadLlegada = '" + ciudad + "' ;");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
         }//Fin try
@@ -598,7 +598,7 @@ public class TransactionMySQL {
         conn.setTransactionIsolation(1);
 
         try {
-            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where Duracion = '"+duracion+ "' ;");
+            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where Duracion = '" + duracion + "' ;");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
         }//Fin try
@@ -614,7 +614,7 @@ public class TransactionMySQL {
         conn.setTransactionIsolation(1);
 
         try {
-            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where Precio between "+precioMin+ " and "+precioMax+";");
+            query("select Identificador, Descripcion, CiudadSalida, PaisSalida, CiudadLlegada, PaisLlegada, Duracion, Precio from CIRCUITO where Precio between " + precioMin + " and " + precioMax + ";");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
         }//Fin try
@@ -644,13 +644,13 @@ public class TransactionMySQL {
     }//Fin qryAllDistnCiudades
 
     //--------------------------------------------------------------------------
-    public void queryAllLugares() throws SQLException, IOException{
+    public void queryAllLugares() throws SQLException, IOException {
         conn.setTransactionIsolation(1);
-        try{
+        try {
             query("select Nombre, Ciudad from LUGARAVISITAR;");
             conn.commit();
         }//Fin try
-        catch(SQLException sqle){
+        catch (SQLException sqle) {
             conn.rollback();
         }//end catch
     }//end queryAllLugares
@@ -745,7 +745,7 @@ public class TransactionMySQL {
         conn.setTransactionIsolation(1);
 
         try {
-            query("select * from HOTEL where Nombre = '"+nombre+"';");
+            query("select * from HOTEL where Nombre = '" + nombre + "';");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
         }//Fin try
@@ -761,7 +761,7 @@ public class TransactionMySQL {
         conn.setTransactionIsolation(1);
 
         try {
-            query("select * from HOTEL where Ciudad = '"+ciudad+"';");
+            query("select * from HOTEL where Ciudad = '" + ciudad + "';");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
         }//Fin try
@@ -777,7 +777,7 @@ public class TransactionMySQL {
         conn.setTransactionIsolation(1);
 
         try {
-            query("select * from HOTEL where Pais = '"+pais+"';");
+            query("select * from HOTEL where Pais = '" + pais + "';");
             //Si no hay error hacer commit
             conn.commit(); //Fin transaccion e inicio de otra transaccion
         }//Fin try

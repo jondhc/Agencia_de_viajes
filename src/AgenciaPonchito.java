@@ -540,7 +540,7 @@ public class AgenciaPonchito {
                     System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
-                    switch(iop){
+                    switch (iop) {
                         case 0:
                             break;
                         case 1:
@@ -570,7 +570,7 @@ public class AgenciaPonchito {
                     System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
-                    switch(iop){
+                    switch (iop) {
                         case 0:
                             break;
                         case 1:
@@ -600,7 +600,7 @@ public class AgenciaPonchito {
                     System.out.println("0)Regresar al menu anterior ");
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
-                    switch(iop){
+                    switch (iop) {
                         case 0:
                             break;
                         case 1: //Todos los circuitos disponibles
@@ -656,7 +656,7 @@ public class AgenciaPonchito {
                     System.out.print("Opcion: ");
                     iop = Integer.parseInt(in.readLine());
 
-                    switch(iop){
+                    switch (iop) {
                         case 0:
                             break;
                         case 1: //Todos los hoteles disponibles
